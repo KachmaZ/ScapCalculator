@@ -1,0 +1,41 @@
+<template>
+  <VContainer class="mx-a">
+    <VRow>
+      <VCol cols="12">
+        <VToolbar color="primary" rounded class="text-white">
+          <VToolbarTitle class="text-h5">Aircraft Types</VToolbarTitle>
+          <VBtn icon="mdi-plus" @click="openEntityConstructor(tab as ConstructorEntity)"></VBtn>
+        </VToolbar>
+      </VCol>
+    </VRow>
+    <VRow>
+      <VCol cols="12">
+        <VCard variant="outlined" color="primary">
+          <VTabs v-model="tab" color="primary" dark slider-color="primary" align-tabs="center">
+            <VTab value="type"> Aircraft Types </VTab>
+            <VTab value="subtype"> Aircraft Subtypes </VTab>
+          </VTabs>
+          <VTabsWindow v-model="tab">
+            <VTabsWindowItem value="type">
+              <TypesTable />
+            </VTabsWindowItem>
+            <VTabsWindowItem value="subtype">
+              <SubtypesTable />
+            </VTabsWindowItem>
+          </VTabsWindow>
+        </VCard>
+      </VCol>
+    </VRow>
+  </VContainer>
+</template>
+
+<script setup lang="ts">
+import SubtypesTable from '@/components/SubtypesTable.vue'
+import TypesTable from '@/components/TypesTable.vue'
+import { useModalStore, type ConstructorEntity } from '@/stores/modalStore'
+import { ref } from 'vue'
+const modalStore = useModalStore()
+const { openEntityConstructor } = modalStore
+
+const tab = ref('type')
+</script>

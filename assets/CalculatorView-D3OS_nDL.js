@@ -1,0 +1,1 @@
+import{_ as o,c as a,w as n,a as s,r,o as c}from"./index-jJXN7g65.js";const _={};function l(f,e){const t=r("VContainer");return c(),a(t,{class:"mx-a"},{default:n(()=>e[0]||(e[0]=[s("h3",{class:"text-h3 text-center"},"Тут будет калькулятор",-1)])),_:1,__:[0]})}const x=o(_,[["render",l]]);export{x as default};

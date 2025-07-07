@@ -1,4 +1,5 @@
-import type { AircraftModel } from '@/models'
+import type { AircraftModel, SCCredentials } from '@/models'
+import { useAuthStore } from '@/stores/authStore'
 import {
   type ConstructorDraft,
   type ConstructorEntity,
@@ -10,6 +11,18 @@ import { storeToRefs } from 'pinia'
 export const useApi = () => {
   const modelsStore = useModelsStore()
   const { modelList, typesList, subtypesList } = storeToRefs(modelsStore)
+
+  const authStore = useAuthStore()
+  const { logIn } = authStore
+
+  const authenticate = (credentials: SCCredentials) => {
+    if (
+      credentials.login === import.meta.env.VITE_ADMIN_LOGIN &&
+      credentials.password === import.meta.env.VITE_ADMIN_PASSWORD
+    ) {
+      logIn()
+    }
+  }
 
   const addEntity = (entity: ConstructorEntity, draft: ConstructorDraft, modelID?: string) => {
     const editingModelIndex = modelList.value.findIndex((model) => model.id === modelID)
@@ -214,6 +227,7 @@ export const useApi = () => {
   }
 
   return {
+    authenticate,
     addEntity,
     editEntity,
     deleteEntity,

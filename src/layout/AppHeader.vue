@@ -17,12 +17,20 @@
   </VNavigationDrawer>
   <VAppBar color="primary">
     <VAppBarNavIcon icon="mdi-menu" @click.stop="drawer = !drawer"></VAppBarNavIcon>
-    <VAppBarTitle>SCAP Calculator</VAppBarTitle>
+    <VAppBarTitle @click="router.push({ name: 'Home' })" class="cursor-pointer"
+      >SCAP Calculator</VAppBarTitle
+    >
+    <VBtn icon="mdi-logout" @click="logOut()" />
   </VAppBar>
 </template>
 
 <script setup lang="ts">
+import router from '@/router'
+import { useAuthStore } from '@/stores/authStore'
 import { ref } from 'vue'
+
+const authStore = useAuthStore()
+const { logOut } = authStore
 
 const drawer = ref(false)
 

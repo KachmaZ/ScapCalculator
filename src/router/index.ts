@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { middlewarePipeline } from './middlewares/index'
 import HeaderLayout from '@/layout/HeaderLayout.vue'
 import LoginView from '@/views/LoginView.vue'
+import isAuthenticated from './middlewares/isAuthenticated'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,6 +13,7 @@ const router = createRouter({
       component: () => import('@/views/MainView.vue'),
       meta: {
         layout: HeaderLayout,
+        middlewares: [isAuthenticated],
       },
     },
     {
@@ -25,6 +27,7 @@ const router = createRouter({
       component: () => import('@/views/AircraftModelsView.vue'),
       meta: {
         layout: HeaderLayout,
+        middlewares: [isAuthenticated],
       },
     },
     {
@@ -33,6 +36,7 @@ const router = createRouter({
       component: () => import('@/views/ModelConstructorView.vue'),
       meta: {
         layout: HeaderLayout,
+        middlewares: [isAuthenticated],
       },
     },
     {
@@ -41,6 +45,7 @@ const router = createRouter({
       component: () => import('@/views/ModelConstructorView.vue'),
       meta: {
         layout: HeaderLayout,
+        middlewares: [isAuthenticated],
       },
     },
     {
@@ -49,6 +54,7 @@ const router = createRouter({
       component: () => import('@/views/AircraftModelItemView.vue'),
       meta: {
         layout: HeaderLayout,
+        middlewares: [isAuthenticated],
       },
     },
     {
@@ -57,6 +63,7 @@ const router = createRouter({
       component: () => import('@/views/AircraftTypesView.vue'),
       meta: {
         layout: HeaderLayout,
+        middlewares: [isAuthenticated],
       },
     },
     {
@@ -65,6 +72,7 @@ const router = createRouter({
       component: () => import('@/views/CalculatorView.vue'),
       meta: {
         layout: HeaderLayout,
+        middlewares: [isAuthenticated],
       },
     },
   ],

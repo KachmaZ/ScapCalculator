@@ -1,10 +1,11 @@
-// import { useAuthStore } from "../store/authStore";
-// import { storeToRefs } from "pinia";
+import { useAuthStore } from '@/stores/authStore'
+import { storeToRefs } from 'pinia'
 
-// export default function isAuthenticated() {
-//   const { isAuthenticated } = storeToRefs(useAuthStore());
-//   if (!isAuthenticated.value) {
-//     return { path: "/sign-in" };
-//   }
-//   return true;
-// }
+export default function isAuthenticated() {
+  const authStore = useAuthStore()
+  const { isAuthenticated } = storeToRefs(authStore)
+  if (!isAuthenticated.value) {
+    return { name: 'Login' }
+  }
+  return true
+}

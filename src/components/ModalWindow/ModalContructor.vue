@@ -69,29 +69,35 @@ onMounted(() => {
   if (editMode.value) {
     switch (currentEntity.value) {
       case 'type': {
-        const { id, ...editObject } = typesList.value.find(
-          (type) => type.id === currentEditingID.value,
-        )
-        currentDraftObject.value = { ...currentDraftObject.value, ...editObject }
+        const target = typesList.value.find((type) => type.id === currentEditingID.value)
+        if (target) {
+          const { id: _, ...editObject } = target
+          currentDraftObject.value = { ...currentDraftObject.value, ...editObject }
+        }
         break
       }
       case 'subtype': {
-        const { id, ...editObject } = subtypesList.value.find(
-          (type) => type.id === currentEditingID.value,
-        )
-        currentDraftObject.value = { ...currentDraftObject.value, ...editObject }
+        const target = subtypesList.value.find((type) => type.id === currentEditingID.value)
+        if (target) {
+          const { id: _, ...editObject } = target
+          currentDraftObject.value = { ...currentDraftObject.value, ...editObject }
+        }
         break
       }
       case 'altCap': {
         if (modelID && currentEntity.value) {
           const modelIndex = modelList.value.findIndex((model) => model.id === modelID)
-          const { id, ...editObject } = modelList.value[modelIndex].altitudeCapability.find(
+
+          const target = modelList.value[modelIndex].altitudeCapability.find(
             (entity) => entity.id === currentEditingID.value,
           )
+          if (target) {
+            const { id: _, ...editObject } = target
 
-          currentDraftObject.value = {
-            ...currentDraftObject.value,
-            ...editObject,
+            currentDraftObject.value = {
+              ...currentDraftObject.value,
+              ...editObject,
+            }
           }
         }
         break
@@ -99,13 +105,16 @@ onMounted(() => {
       default:
         if (modelID && currentEntity.value) {
           const modelIndex = modelList.value.findIndex((model) => model.id === modelID)
-          const { id, ...editObject } = modelList.value[modelIndex][currentEntity.value].find(
+          const target = modelList.value[modelIndex][currentEntity.value].find(
             (entity) => entity.id === currentEditingID.value,
           )
+          if (target) {
+            const { id: _, ...editObject } = target
 
-          currentDraftObject.value = {
-            ...currentDraftObject.value,
-            ...editObject,
+            currentDraftObject.value = {
+              ...currentDraftObject.value,
+              ...editObject,
+            }
           }
         }
         break

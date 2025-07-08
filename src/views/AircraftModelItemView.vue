@@ -73,7 +73,7 @@
                         variant="plain"
                         @click="openEntityEditor('climb', item.id)"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn>
 
                       <VBtn
@@ -82,7 +82,7 @@
                         variant="plain"
                         @click="deleteEntity('climb', item.id, String(currentModelID))"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn></div
                   ></template>
                 </VDataTableVirtual>
@@ -105,7 +105,7 @@
                         variant="plain"
                         @click="openEntityEditor('cruise', item.id)"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn>
 
                       <VBtn
@@ -114,7 +114,7 @@
                         variant="plain"
                         @click="deleteEntity('cruise', item.id, String(currentModelID))"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn></div
                   ></template>
                 </VDataTableVirtual>
@@ -133,11 +133,11 @@
                     <div class="d-flex ga-2 justify-center">
                       <VBtn
                         icon="mdi-pencil"
-                        size="2Ravk4"
+                        size="24"
                         variant="plain"
                         @click="openEntityEditor('descent', item.id)"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn>
 
                       <VBtn
@@ -146,7 +146,7 @@
                         variant="plain"
                         @click="deleteEntity('descent', item.id, String(currentModelID))"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn></div
                   ></template>
                 </VDataTableVirtual>
@@ -168,7 +168,7 @@
                         variant="plain"
                         @click="openEntityEditor('hold', item.id)"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn>
 
                       <VBtn
@@ -177,7 +177,7 @@
                         variant="plain"
                         @click="deleteEntity('hold', item.id, String(currentModelID))"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn></div
                   ></template>
                 </VDataTableVirtual>
@@ -199,7 +199,7 @@
                         variant="plain"
                         @click="openEntityEditor('altCap', item.id)"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn>
 
                       <VBtn
@@ -208,7 +208,7 @@
                         variant="plain"
                         @click="deleteEntity('altCap', item.id, String(currentModelID))"
                       >
-                        <VIcon size="16"></VIcon>
+                        <VIcon size="24"></VIcon>
                       </VBtn></div
                   ></template>
                 </VDataTableVirtual>

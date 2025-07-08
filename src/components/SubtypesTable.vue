@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <VDataTableVirtual :items="items" :loading="isLoading" hover :headers="headers">
+  <VTextField type="text" label="Search" prepend-inner-icon="mdi-magnify" v-model="search" />
+  <VDataTableVirtual :items="items" :loading="isLoading" hover :headers="headers" :search="search">
     <template v-slot:item.actions="{ item }">
       <div class="d-flex ga-2 justify-center">
         <VBtn
@@ -61,6 +62,8 @@ const headers = [
     sortable: false,
   },
 ]
+
+const search = ref('')
 onMounted(() => {
   setTimeout(() => {
     getAircraftSubtypes()

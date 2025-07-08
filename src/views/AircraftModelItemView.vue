@@ -44,12 +44,23 @@
               ></VBtn
             ></VCol>
           </VRow>
+          <VRow>
+            <VCol cols="12">
+              <VTextField
+                type="text"
+                label="Search"
+                prepend-inner-icon="mdi-magnify"
+                v-model="search"
+              />
+            </VCol>
+          </VRow>
           <VCardText>
             <VTabsWindow v-model="tab">
               <VTabsWindowItem value="climb">
                 <VDataTableVirtual
                   :headers="tablesHeaders.climb"
                   :items="currentModel?.climb"
+                  :search="search"
                   hide-actions
                   hover
                   class="elevation-1"
@@ -81,6 +92,7 @@
                 <VDataTableVirtual
                   :headers="tablesHeaders.cruise"
                   :items="currentModel?.cruise"
+                  :search="search"
                   hide-actions
                   hover
                   class="elevation-1"
@@ -112,6 +124,7 @@
                 <VDataTableVirtual
                   :headers="tablesHeaders.descent"
                   :items="currentModel?.descent"
+                  :search="search"
                   hide-actions
                   hover
                   class="elevation-1"
@@ -142,6 +155,7 @@
                 <VDataTableVirtual
                   :headers="tablesHeaders.hold"
                   :items="currentModel?.hold"
+                  :search="search"
                   hide-actions
                   hover
                   class="elevation-1"
@@ -172,6 +186,7 @@
                 <VDataTableVirtual
                   :headers="tablesHeaders.altCap"
                   :items="currentModel?.altitudeCapability"
+                  :search="search"
                   hide-actions
                   hover
                   class="elevation-1"
@@ -206,7 +221,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import ModelInfoCard from '@/components/ModelInfoCard.vue'
 import router from '@/router'
 import type { AircraftModel } from '@/models'
@@ -226,6 +241,8 @@ const tab = ref<ConstructorEntity>('climb')
 
 const currentModelID = useRoute().value?.params.id
 const currentModel = ref<AircraftModel | undefined>(undefined)
+
+const search = ref('')
 
 const generalInfo = computed(() => {
   return {
@@ -349,6 +366,10 @@ const tablesHeaders = {
     { title: 'Actions', key: 'actions', sortable: false },
   ],
 }
+
+watch(tab, () => {
+  search.value = ''
+})
 
 onMounted(() => {
   if (!currentModelID) {

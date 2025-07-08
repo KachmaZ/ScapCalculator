@@ -1,5 +1,6 @@
 <template>
-  <VDataTableVirtual :headers="headers" :items="items" hover :loading="isLoading">
+  <VTextField type="text" label="Search" v-model="search" prepend-inner-icon="mdi-magnify" />
+  <VDataTableVirtual :headers="headers" :items="items" hover :loading="isLoading" :search="search">
     <template v-slot:item="{ item }">
       <tr @click="handleRowClick(item.id)">
         <td>{{ item.info.ModelTitle }}</td>
@@ -24,17 +25,27 @@ const handleRowClick = (modelID: string) => {
   router.push({ name: 'ModelsItem', params: { id: modelID } })
 }
 const headers = [
-  { title: 'Model Name', key: 'modelName', align: 'start' as SCDataTableHeadersAlign },
-  { title: 'Aircraft SubType', key: 'aircraftSubtype', align: 'start' as SCDataTableHeadersAlign },
-  { title: 'Engine Type', key: 'engineType', align: 'start' as SCDataTableHeadersAlign },
-  { title: 'Model Type', key: 'modelType', align: 'center' as SCDataTableHeadersAlign },
-  { title: 'Format version', key: 'formatVersion', align: 'center' as SCDataTableHeadersAlign },
+  { title: 'Model Name', key: 'info.ModelTitle', align: 'start' as SCDataTableHeadersAlign },
+  {
+    title: 'Aircraft SubType',
+    key: 'info.AircraftSubTypeName',
+    align: 'start' as SCDataTableHeadersAlign,
+  },
+  { title: 'Engine Type', key: 'info.EngineType', align: 'start' as SCDataTableHeadersAlign },
+  { title: 'Model Type', key: 'info.ModelType', align: 'center' as SCDataTableHeadersAlign },
+  {
+    title: 'Format version',
+    key: 'info.FDPARevisionDate',
+    align: 'center' as SCDataTableHeadersAlign,
+  },
   {
     title: 'FDPA revision date',
     key: 'fdpaRevisionDate',
     align: 'center' as SCDataTableHeadersAlign,
   },
 ]
+
+const search = ref('')
 const modelsStore = useModelsStore()
 const { getAircraftModels } = modelsStore
 const { modelList: items } = storeToRefs(modelsStore)

@@ -10,13 +10,13 @@ import type { AircraftInfo } from './aircraftModelInfo'
 
 export interface AircraftModel {
   id: string
+  info: AircraftInfo
+  units: AircraftUnits
   altitudeCapability: AircraftAltCap[]
   climb: AircraftClimb[]
   cruise: AircraftCruise[]
   descent: AircraftDescent[]
   hold: AircraftHold[]
-  info: AircraftInfo
-  units: AircraftUnits
 }
 
 export interface AircraftModelType {

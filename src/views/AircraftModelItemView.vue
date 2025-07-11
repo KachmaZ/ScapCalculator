@@ -12,12 +12,12 @@
           ></VBtn>
         </VToolbar>
       </VCol>
+      <VCol cols="4"><ModelInfoCard title="Units" :info="generalInfo.units" /></VCol>
       <VCol cols="4"> <ModelInfoCard title="Aircraft" :info="generalInfo.aircraft" /></VCol>
       <VCol cols="4"><ModelInfoCard title="Model Data" :info="generalInfo.modelData" /></VCol>
       <VCol cols="4"
         ><ModelInfoCard title="Model Default Weights" :info="generalInfo.modelDefaultWeights"
       /></VCol>
-      <VCol cols="4"><ModelInfoCard title="Units" :info="generalInfo.units" /></VCol>
       <VCol cols="4"><ModelInfoCard title="Model Params" :info="generalInfo.modelParams" /></VCol>
       <VCol cols="4"><ModelInfoCard title="Fuel Capacity" :info="generalInfo.fuelCapacity" /></VCol>
     </VRow>
@@ -32,7 +32,7 @@
                 <VTab value="cruise">Cruise</VTab>
                 <VTab value="descent">Descent</VTab>
                 <VTab value="hold">Hold</VTab>
-                <VTab value="altCap">AltCap</VTab>
+                <VTab value="altitudeCapability">AltCap</VTab>
               </VTabs>
             </VCol>
             <VCol cols="1" class="bg-primary d-flex justify-center align-center">
@@ -45,173 +45,39 @@
             ></VCol>
           </VRow>
           <VRow>
-            <VCol cols="12">
+            <VCol cols="12" class="mb-0">
               <VTextField
                 type="text"
                 label="Search"
                 prepend-inner-icon="mdi-magnify"
+                hide-details
                 v-model="search"
               />
             </VCol>
           </VRow>
           <VCardText>
             <VTabsWindow v-model="tab">
-              <VTabsWindowItem value="climb">
-                <VDataTableVirtual
-                  :headers="tablesHeaders.climb"
-                  :items="currentModel?.climb"
+              <VTabsWindowItem
+                v-for="tableEntity in Object.keys(tablesHeaders) as Exclude<
+                  ConstructorEntity,
+                  'type' | 'subtype'
+                >[]"
+                :key="tableEntity!"
+                :value="tableEntity!"
+              >
+                <AircraftEntityTable
+                  :entity="tableEntity"
+                  :current-model-id="String(currentModelID)"
+                  :table-headers="tablesHeaders[tableEntity!]"
+                  :table-items="
+                    currentModel
+                      ? currentModel[
+                          tableEntity as keyof Omit<AircraftModel, 'id' | 'info' | 'units'>
+                        ]
+                      : []
+                  "
                   :search="search"
-                  hide-actions
-                  hover
-                  class="elevation-1"
-                >
-                  <template v-slot:item.actions="{ item }">
-                    <div class="d-flex ga-2 justify-center">
-                      <VBtn
-                        icon="mdi-pencil"
-                        size="24"
-                        variant="plain"
-                        @click="openEntityEditor('climb', item.id)"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn>
-
-                      <VBtn
-                        icon="mdi-delete-outline"
-                        size="24"
-                        variant="plain"
-                        @click="deleteEntity('climb', item.id, String(currentModelID))"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn></div
-                  ></template>
-                </VDataTableVirtual>
-              </VTabsWindowItem>
-
-              <VTabsWindowItem value="cruise">
-                <VDataTableVirtual
-                  :headers="tablesHeaders.cruise"
-                  :items="currentModel?.cruise"
-                  :search="search"
-                  hide-actions
-                  hover
-                  class="elevation-1"
-                >
-                  <template v-slot:item.actions="{ item }">
-                    <div class="d-flex ga-2 justify-center">
-                      <VBtn
-                        icon="mdi-pencil"
-                        size="24"
-                        variant="plain"
-                        @click="openEntityEditor('cruise', item.id)"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn>
-
-                      <VBtn
-                        icon="mdi-delete-outline"
-                        size="24"
-                        variant="plain"
-                        @click="deleteEntity('cruise', item.id, String(currentModelID))"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn></div
-                  ></template>
-                </VDataTableVirtual>
-              </VTabsWindowItem>
-
-              <VTabsWindowItem value="descent">
-                <VDataTableVirtual
-                  :headers="tablesHeaders.descent"
-                  :items="currentModel?.descent"
-                  :search="search"
-                  hide-actions
-                  hover
-                  class="elevation-1"
-                >
-                  <template v-slot:item.actions="{ item }">
-                    <div class="d-flex ga-2 justify-center">
-                      <VBtn
-                        icon="mdi-pencil"
-                        size="24"
-                        variant="plain"
-                        @click="openEntityEditor('descent', item.id)"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn>
-
-                      <VBtn
-                        icon="mdi-delete-outline"
-                        size="24"
-                        variant="plain"
-                        @click="deleteEntity('descent', item.id, String(currentModelID))"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn></div
-                  ></template>
-                </VDataTableVirtual>
-              </VTabsWindowItem>
-              <VTabsWindowItem value="hold">
-                <VDataTableVirtual
-                  :headers="tablesHeaders.hold"
-                  :items="currentModel?.hold"
-                  :search="search"
-                  hide-actions
-                  hover
-                  class="elevation-1"
-                >
-                  <template v-slot:item.actions="{ item }">
-                    <div class="d-flex ga-2 justify-center">
-                      <VBtn
-                        icon="mdi-pencil"
-                        size="24"
-                        variant="plain"
-                        @click="openEntityEditor('hold', item.id)"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn>
-
-                      <VBtn
-                        icon="mdi-delete-outline"
-                        size="24"
-                        variant="plain"
-                        @click="deleteEntity('hold', item.id, String(currentModelID))"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn></div
-                  ></template>
-                </VDataTableVirtual>
-              </VTabsWindowItem>
-              <VTabsWindowItem value="altCap">
-                <VDataTableVirtual
-                  :headers="tablesHeaders.altCap"
-                  :items="currentModel?.altitudeCapability"
-                  :search="search"
-                  hide-actions
-                  hover
-                  class="elevation-1"
-                >
-                  <template v-slot:item.actions="{ item }">
-                    <div class="d-flex ga-2 justify-center">
-                      <VBtn
-                        icon="mdi-pencil"
-                        size="24"
-                        variant="plain"
-                        @click="openEntityEditor('altCap', item.id)"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn>
-
-                      <VBtn
-                        icon="mdi-delete-outline"
-                        size="24"
-                        variant="plain"
-                        @click="deleteEntity('altCap', item.id, String(currentModelID))"
-                      >
-                        <VIcon size="24"></VIcon>
-                      </VBtn></div
-                  ></template>
-                </VDataTableVirtual>
+                />
               </VTabsWindowItem>
             </VTabsWindow>
           </VCardText> </VCard
@@ -224,18 +90,18 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import ModelInfoCard from '@/components/ModelInfoCard.vue'
 import router from '@/router'
-import type { AircraftModel } from '@/models'
+import type { AircraftModel, ConstructorEntity } from '@/models'
 import { useModelsStore } from '@/stores/modelsStore'
 import { useRoute } from 'vuetify/lib/composables/router.mjs'
-import { useModalStore, type ConstructorEntity } from '@/stores/modalStore'
-import { useApi } from '@/api'
+import { useModalStore } from '@/stores/modalStore'
+import AircraftEntityTable from '@/components/AircraftEntityTable.vue'
+import type { DataTableHeader } from 'vuetify'
 
 const modelsStore = useModelsStore()
 const { getAircraftModelByID } = modelsStore
-const { deleteEntity } = useApi()
 
 const modalStore = useModalStore()
-const { openEntityConstructor, openEntityEditor } = modalStore
+const { openEntityConstructor } = modalStore
 
 const tab = ref<ConstructorEntity>('climb')
 
@@ -304,7 +170,10 @@ const generalInfo = computed(() => {
   }
 })
 
-const tablesHeaders = {
+const tablesHeaders: Record<
+  Exclude<ConstructorEntity, null | 'type' | 'subtype'>,
+  DataTableHeader[]
+> = {
   climb: [
     { title: 'Name', key: 'ModeName' },
     { title: 'Cost Index', key: 'CostIndex' },
@@ -356,7 +225,7 @@ const tablesHeaders = {
     { title: 'Degradation factor', key: 'DegradationFactor' },
     { title: 'Actions', key: 'actions', sortable: false },
   ],
-  altCap: [
+  altitudeCapability: [
     { title: 'Name', key: 'ModeName' },
     { title: 'Cruise Mode', key: 'CruiseMode' },
     { title: 'Engine in operate', key: 'EngineInOperate' },
@@ -386,4 +255,13 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.table-container {
+  height: calc(100vh - 280px);
+  padding: 0;
+  display: flex;
+  margin-top: 20px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+</style>

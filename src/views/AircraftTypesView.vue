@@ -1,7 +1,7 @@
 <template>
   <VContainer class="mx-a">
     <VRow>
-      <VCol cols="12">
+      <VCol cols="12" class="pb-0">
         <VToolbar color="primary" rounded class="text-white">
           <VToolbarTitle class="text-h5">Aircraft Types</VToolbarTitle>
           <VBtn icon="mdi-plus" @click="openEntityConstructor(tab as ConstructorEntity)"></VBtn>
@@ -9,7 +9,7 @@
       </VCol>
     </VRow>
     <VRow>
-      <VCol cols="12">
+      <VCol cols="12" class="pt-0">
         <VCard variant="outlined" color="primary">
           <VTabs v-model="tab" color="primary" dark slider-color="primary" align-tabs="center">
             <VTab value="type"> Aircraft Types </VTab>
@@ -32,7 +32,8 @@
 <script setup lang="ts">
 import SubtypesTable from '@/components/SubtypesTable.vue'
 import TypesTable from '@/components/TypesTable.vue'
-import { useModalStore, type ConstructorEntity } from '@/stores/modalStore'
+import type { ConstructorEntity } from '@/models'
+import { useModalStore } from '@/stores/modalStore'
 import { ref } from 'vue'
 const modalStore = useModalStore()
 const { openEntityConstructor } = modalStore

@@ -1,27 +1,6 @@
-import type {
-  AircraftAltCap,
-  AircraftClimb,
-  AircraftCruise,
-  AircraftDescent,
-  AircraftHold,
-  AircraftModelSubtype,
-  AircraftModelType,
-} from '@/models'
+import type { ConstructorEntity, DraftObjects } from '@/models'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-
-export interface DraftObjects {
-  altCap: Omit<AircraftAltCap, 'id'>
-  climb: Omit<AircraftClimb, 'id'>
-  cruise: Omit<AircraftCruise, 'id'>
-  descent: Omit<AircraftDescent, 'id'>
-  hold: Omit<AircraftHold, 'id'>
-  type: Omit<AircraftModelType, 'id'>
-  subtype: Omit<AircraftModelSubtype, 'id'>
-}
-
-export type ConstructorEntity = null | keyof DraftObjects
-export type ConstructorDraft = DraftObjects[keyof DraftObjects]
 
 export const useModalStore = defineStore('modal', () => {
   const isOpened = ref(false)
@@ -30,7 +9,7 @@ export const useModalStore = defineStore('modal', () => {
   const currentEditingID = ref<string | null>(null)
 
   const draftObjects: DraftObjects = {
-    altCap: {
+    altitudeCapability: {
       CruiseMode: '',
       EngineInOperate: 0,
       ISA: 'NO',

@@ -1,6 +1,6 @@
 <template>
   <div class="modal__wrapper" v-if="isOpened" @click.self="handleOuterClick">
-    <VCard width="600px" min-height="400px" max-height="600px" class="pa-4 overflow-scroll"
+    <VCard width="600px" max-height="600px" class="pa-4 overflow-scroll"
       ><ModalContructor :entity="currentEntity" />
     </VCard>
   </div>

@@ -1,10 +1,12 @@
-import type { AircraftModel, SCCredentials } from '@/models'
+import type {
+  AircraftModel,
+  ConstructorDraft,
+  ConstructorEntity,
+  DraftObjects,
+  SCCredentials,
+} from '@/models'
 import { useAuthStore } from '@/stores/authStore'
-import {
-  type ConstructorDraft,
-  type ConstructorEntity,
-  type DraftObjects,
-} from '@/stores/modalStore'
+import {} from '@/stores/modalStore'
 import { useModelsStore } from '@/stores/modelsStore'
 import { storeToRefs } from 'pinia'
 
@@ -73,11 +75,11 @@ export const useApi = () => {
           })
         }
         break
-      case 'altCap':
+      case 'altitudeCapability':
         if (modelID) {
           modelList.value[editingModelIndex].altitudeCapability.push({
             id: crypto.randomUUID(),
-            ...(draft as Omit<DraftObjects['altCap'], 'id'>),
+            ...(draft as Omit<DraftObjects['altitudeCapability'], 'id'>),
           })
         }
         break
@@ -154,14 +156,14 @@ export const useApi = () => {
           }
         }
         break
-      case 'altCap':
+      case 'altitudeCapability':
         if (modelID) {
           const editingEntityIndex = modelList.value[
             editingModelIndex
           ].altitudeCapability.findIndex((ent) => ent.id === entityId)
           modelList.value[editingModelIndex].altitudeCapability[editingEntityIndex] = {
             ...modelList.value[editingModelIndex].altitudeCapability[editingEntityIndex],
-            ...(draft as Omit<DraftObjects['altCap'], 'id'>),
+            ...(draft as Omit<DraftObjects['altitudeCapability'], 'id'>),
           }
         }
         break
@@ -207,11 +209,11 @@ export const useApi = () => {
           )
         }
         break
-      case 'altCap':
+      case 'altitudeCapability':
         if (modelID) {
           modelList.value[editingModelIndex].altitudeCapability = modelList.value[
             editingModelIndex
-          ].altitudeCapability.filter((altCap) => altCap.id !== entityId)
+          ].altitudeCapability.filter((altitudeCapability) => altitudeCapability.id !== entityId)
         }
         break
     }

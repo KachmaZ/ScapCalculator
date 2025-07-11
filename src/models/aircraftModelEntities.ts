@@ -1,5 +1,13 @@
 import type { SCBoolean } from './general'
 
+export type AircraftEntityName = 'climb' | 'cruise' | 'descent' | 'hold' | 'altitudeCapability'
+
+export type AircraftEntity =
+  | AircraftAltCap
+  | AircraftClimb
+  | AircraftCruise
+  | AircraftDescent
+  | AircraftHold
 export interface AircraftAltCap {
   id: string
   CruiseMode: string

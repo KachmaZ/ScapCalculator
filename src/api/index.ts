@@ -6,7 +6,6 @@ import type {
   SCCredentials,
 } from '@/models'
 import { useAuthStore } from '@/stores/authStore'
-import {} from '@/stores/modalStore'
 import { useModelsStore } from '@/stores/modelsStore'
 import { storeToRefs } from 'pinia'
 
@@ -27,7 +26,7 @@ export const useApi = () => {
   }
 
   const addEntity = (entity: ConstructorEntity, draft: ConstructorDraft, modelID?: string) => {
-    const editingModelIndex = modelList.value.findIndex((model) => model.id === modelID)
+    const editingModelIndex = modelList.value.findIndex((model) => String(model.id) === modelID)
 
     switch (entity) {
       case 'type':
@@ -92,7 +91,7 @@ export const useApi = () => {
     draft: ConstructorDraft,
     modelID?: string,
   ) => {
-    const editingModelIndex = modelList.value.findIndex((model) => model.id === modelID)
+    const editingModelIndex = modelList.value.findIndex((model) => String(model.id) === modelID)
 
     switch (entity) {
       case 'type': {

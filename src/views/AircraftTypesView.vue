@@ -33,10 +33,10 @@
 import SubtypesTable from '@/components/SubtypesTable.vue'
 import TypesTable from '@/components/TypesTable.vue'
 import type { ConstructorEntity } from '@/models'
-import { useModalStore } from '@/stores/modalStore'
+import { useConstructorStore } from '@/stores/constructorStore'
 import { ref } from 'vue'
-const modalStore = useModalStore()
-const { openEntityConstructor } = modalStore
+const constructorStore = useConstructorStore()
+const { openEntityConstructor } = constructorStore
 
 const tab = ref('type')
 </script>

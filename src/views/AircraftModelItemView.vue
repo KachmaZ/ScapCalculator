@@ -93,14 +93,14 @@ import router from '@/router'
 import type { AircraftModel, ConstructorEntity } from '@/models'
 import { useModelsStore } from '@/stores/modelsStore'
 import { useRoute } from 'vuetify/lib/composables/router.mjs'
-import { useModalStore } from '@/stores/modalStore'
+import { useConstructorStore } from '@/stores/constructorStore'
 import AircraftEntityTable from '@/components/AircraftEntityTable.vue'
 import type { DataTableHeader } from 'vuetify'
 
 const modelsStore = useModelsStore()
 const { getAircraftModelByID } = modelsStore
 
-const modalStore = useModalStore()
+const modalStore = useConstructorStore()
 const { openEntityConstructor } = modalStore
 
 const tab = ref<ConstructorEntity>('climb')

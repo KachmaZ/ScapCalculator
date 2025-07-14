@@ -2,7 +2,7 @@ import type { ConstructorEntity, DraftObjects } from '@/models'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const useModalStore = defineStore('modal', () => {
+export const useConstructorStore = defineStore('modal', () => {
   const isOpened = ref(false)
   const editMode = ref(false)
   const currentEntity = ref<ConstructorEntity>(null)
@@ -89,15 +89,18 @@ export const useModalStore = defineStore('modal', () => {
     isOpened.value = newState
   }
 
-  const resetModal = () => {
+  const resetConstructor = () => {
     isOpened.value = false
     editMode.value = false
+
     currentEditingID.value = null
     currentEntity.value = null
   }
 
   const openEntityConstructor = (entity: ConstructorEntity) => {
     currentEntity.value = entity
+    editMode.value = false
+
     setModal(true)
   }
 
@@ -115,7 +118,7 @@ export const useModalStore = defineStore('modal', () => {
     draftObjects,
     currentEditingID,
 
-    resetModal,
+    resetConstructor,
     openEntityConstructor,
     openEntityEditor,
   }

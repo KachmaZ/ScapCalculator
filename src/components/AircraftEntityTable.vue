@@ -25,7 +25,12 @@
             icon="mdi-delete-outline"
             size="24"
             variant="plain"
-            @click="deleteEntity(entity, item.id, currentModelId)"
+            @click="
+              areYouSure({
+                onAgree: () => deleteEntity(entity, item.id, currentModelId),
+                message: `Delete ${entity}. Are you sure?`,
+              })
+            "
           >
             <VIcon size="24"></VIcon>
           </VBtn></div
@@ -37,7 +42,8 @@
 <script setup lang="ts">
 import { useApi } from '@/api'
 import type { ConstructorEntity } from '@/models'
-import { useModalStore } from '@/stores/modalStore'
+import { useConfirmStore } from '@/stores/confirmStore'
+import { useConstructorStore } from '@/stores/constructorStore'
 import type { DataTableHeader } from 'vuetify'
 
 defineProps<{
@@ -50,8 +56,11 @@ defineProps<{
 }>()
 const { deleteEntity } = useApi()
 
-const modalStore = useModalStore()
+const modalStore = useConstructorStore()
 const { openEntityEditor } = modalStore
+
+const confirmStore = useConfirmStore()
+const { areYouSure } = confirmStore
 </script>
 
 <style scoped lang="scss">

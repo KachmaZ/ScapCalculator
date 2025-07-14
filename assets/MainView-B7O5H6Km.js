@@ -1,1 +1,0 @@
-import{_ as a,c as n,w as o,a as s,r,o as c}from"./index-C-1dsui-.js";const _={};function i(f,e){const t=r("VContainer");return c(),n(t,{class:"mx-a"},{default:o(()=>e[0]||(e[0]=[s("h3",{class:"text-h3 text-center"},"Main Page",-1)])),_:1,__:[0]})}const x=a(_,[["render",i]]);export{x as default};

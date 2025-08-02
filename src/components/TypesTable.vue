@@ -6,6 +6,7 @@
     :table-headers="headers"
     :table-items="items"
     :search="search"
+    density="compact"
   />
 </template>
 

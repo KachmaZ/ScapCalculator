@@ -1,6 +1,13 @@
 <template>
   <VTextField type="text" label="Search" v-model="search" prepend-inner-icon="mdi-magnify" />
-  <VDataTableVirtual :headers="headers" :items="items" hover :loading="isLoading" :search="search">
+  <VDataTableVirtual
+    :headers="headers"
+    :items="items"
+    hover
+    :loading="isLoading"
+    :search="search"
+    density="compact"
+  >
     <template v-slot:item="{ item }">
       <tr @click="handleRowClick(item.id)">
         <td>{{ item.info.ModelTitle }}</td>

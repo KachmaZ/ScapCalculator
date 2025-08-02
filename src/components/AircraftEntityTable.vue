@@ -5,6 +5,7 @@
       :headers="tableHeaders"
       :items="tableItems"
       :search="search"
+      density="compact"
       fixed-header
       hide-actions
       hover

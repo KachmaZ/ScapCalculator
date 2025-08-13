@@ -9,7 +9,7 @@ export interface AircraftInfo {
   Manufacturer: string
   MinimumRunwayLenght: string // ОПЕЧАТКА?
   ModelTitle: string
-  ModelType: string
+  ModelType: 'SCAP' | 'FPPM' | 'AERO' | ''
   NumberOfEngines: number
   PaxCapasity: string
   RevisionDate: string // DATE STRING

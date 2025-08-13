@@ -22,11 +22,14 @@
 </template>
 
 <script setup lang="ts">
+import { useApi } from '@/api'
 import type { SCDataTableHeadersAlign } from '@/models'
 import router from '@/router'
 import { useModelsStore } from '@/stores/modelsStore'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
+
+const { getAircraftModels } = useApi()
 
 const handleRowClick = (modelID: string) => {
   router.push({ name: 'ModelsItem', params: { id: modelID } })
@@ -54,16 +57,12 @@ const headers = [
 
 const search = ref('')
 const modelsStore = useModelsStore()
-const { getAircraftModels } = modelsStore
 const { modelList: items } = storeToRefs(modelsStore)
 
 const isLoading = ref(true)
 
-onMounted(async () => {
-  setTimeout(() => {
-    getAircraftModels()
-    isLoading.value = false
-  }, 1000)
+onMounted(() => {
+  getAircraftModels().then(() => (isLoading.value = false))
 })
 </script>
 

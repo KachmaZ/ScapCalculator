@@ -496,14 +496,17 @@ import { useApi } from '@/api'
 import type { AircraftModel } from '@/models'
 import router from '@/router'
 import { useModelsStore } from '@/stores/modelsStore'
+import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-const { createAircraftModel, updateAircraftModelByID } = useApi()
+const { getAircraftModelByID, createAircraftModel, updateAircraftModelByID } = useApi()
 
 const editorMode = ref(false)
 const modelID = useRoute().params['id']
-const { getAircraftModelByID } = useModelsStore()
+
+const modelStore = useModelsStore()
+const { currentModel } = storeToRefs(modelStore)
 
 const draftModel = ref<Omit<AircraftModel, 'id'>>({
   altitudeCapability: [],
@@ -621,10 +624,11 @@ const handleSaveClick = () => {
   handleBackClick()
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (modelID && typeof modelID === 'string') {
     editorMode.value = true
-    draftModel.value = getAircraftModelByID(modelID)!
+    await getAircraftModelByID(modelID)
+    draftModel.value = currentModel.value
   }
 })
 </script>

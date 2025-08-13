@@ -13,6 +13,8 @@ import { storeToRefs } from 'pinia'
 export const useMockApi: APIComposable = () => {
   const modelsStore = useModelsStore()
   const { modelList, typesList, subtypesList } = storeToRefs(modelsStore)
+  const { setAircraftModels, setAircraftTypes, setAircraftSubtypes, setAircraftCurrentModel } =
+    modelsStore
 
   const authStore = useAuthStore()
   const { logIn } = authStore
@@ -22,7 +24,17 @@ export const useMockApi: APIComposable = () => {
       credentials.login === import.meta.env.VITE_ADMIN_LOGIN &&
       credentials.password === import.meta.env.VITE_ADMIN_PASSWORD
     ) {
-      logIn()
+      logIn(credentials)
+    }
+  }
+
+  const getEntities = async (entity: ConstructorEntity) => {
+    switch (entity) {
+      case 'type':
+        setAircraftTypes([], true)
+        break
+      case 'subtype':
+        setAircraftSubtypes([], true)
     }
   }
 
@@ -222,6 +234,17 @@ export const useMockApi: APIComposable = () => {
         break
     }
   }
+  const getAircraftModels = async () => {
+    setAircraftModels([], true)
+  }
+
+  const getAircraftModelByID = async (modelID: string) => {
+    await getAircraftModels()
+
+    setAircraftCurrentModel(
+      modelList.value.find((model) => model.id === modelID) ?? <AircraftModel>{},
+    )
+  }
 
   const createAircraftModel = async (modelData: Omit<AircraftModel, 'id'>) => {
     modelList.value.push({ id: crypto.randomUUID(), ...modelData })
@@ -234,9 +257,14 @@ export const useMockApi: APIComposable = () => {
 
   return {
     authenticate,
+
+    getEntities,
     addEntity,
     editEntity,
     deleteEntity,
+
+    getAircraftModels,
+    getAircraftModelByID,
     createAircraftModel,
     updateAircraftModelByID,
   }

@@ -22,7 +22,7 @@ import { RouterView } from 'vue-router'
 
 const { getStringFromLS } = useLS()
 const authStore = useAuthStore()
-const { isAuthenticated } = storeToRefs(authStore)
+const { isAuthenticated, savedLogin, savedPassword } = storeToRefs(authStore)
 
 const constructorStore = useConstructorStore()
 const { currentEntity } = storeToRefs(constructorStore)
@@ -36,6 +36,8 @@ if (path) {
 onMounted(() => {
   if (getStringFromLS(LS_KEYS.auth)) {
     isAuthenticated.value = true
+    savedLogin.value = getStringFromLS(LS_KEYS.savedLogin) ?? ''
+    savedPassword.value = getStringFromLS(LS_KEYS.savedPassword) ?? ''
   }
 })
 </script>

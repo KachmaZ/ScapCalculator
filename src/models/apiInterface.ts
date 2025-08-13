@@ -4,6 +4,8 @@ export type APIComposable = () => APIComposableFunctions
 
 interface APIComposableFunctions {
   authenticate: (credentials: SCCredentials) => Promise<void>
+
+  getEntities: (entity: ConstructorEntity) => Promise<void>
   addEntity: (entity: ConstructorEntity, draft: ConstructorDraft, modelID?: string) => Promise<void>
   editEntity: (
     entity: ConstructorEntity,
@@ -12,6 +14,9 @@ interface APIComposableFunctions {
     modelID?: string,
   ) => Promise<void>
   deleteEntity: (entity: ConstructorEntity, entityId: string, modelID?: string) => Promise<void>
+
+  getAircraftModels: () => Promise<void>
+  getAircraftModelByID: (modelID: string) => Promise<void>
   createAircraftModel: (modelData: Omit<AircraftModel, 'id'>) => Promise<void>
   updateAircraftModelByID: (modelID: string, modelData: Omit<AircraftModel, 'id'>) => Promise<void>
 }

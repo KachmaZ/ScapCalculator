@@ -12,19 +12,21 @@
           ></VBtn>
         </VToolbar>
       </VCol>
-      <VCol cols="4"><ModelInfoCard title="Units" :info="generalInfo.units" /></VCol>
-      <VCol cols="4"> <ModelInfoCard title="Aircraft" :info="generalInfo.aircraft" /></VCol>
-      <VCol cols="4"><ModelInfoCard title="Model Data" :info="generalInfo.modelData" /></VCol>
+      <VCol cols="4"><ModelInfoCard title="Units" :info="generalInfo?.units" /></VCol>
+      <VCol cols="4"> <ModelInfoCard title="Aircraft" :info="generalInfo?.aircraft" /></VCol>
+      <VCol cols="4"><ModelInfoCard title="Model Data" :info="generalInfo?.modelData" /></VCol>
       <VCol cols="4"
-        ><ModelInfoCard title="Model Default Weights" :info="generalInfo.modelDefaultWeights"
+        ><ModelInfoCard title="Model Default Weights" :info="generalInfo?.modelDefaultWeights"
       /></VCol>
-      <VCol cols="4"><ModelInfoCard title="Model Params" :info="generalInfo.modelParams" /></VCol>
-      <VCol cols="4"><ModelInfoCard title="Fuel Capacity" :info="generalInfo.fuelCapacity" /></VCol>
+      <VCol cols="4"><ModelInfoCard title="Model Params" :info="generalInfo?.modelParams" /></VCol>
+      <VCol cols="4"
+        ><ModelInfoCard title="Fuel Capacity" :info="generalInfo?.fuelCapacity"
+      /></VCol>
     </VRow>
     <VDivider class="my-4"></VDivider>
     <VRow>
-      <VCol cols="12"
-        ><VCard>
+      <VCol cols="12">
+        <VCard :loading="!!currentModel">
           <VRow>
             <VCol cols="11" class="bg-primary">
               <VTabs v-model="tab" bg-color="primary" align-tabs="center" height="48px">
@@ -87,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import ModelInfoCard from '@/components/ModelInfoCard.vue'
 import router from '@/router'
 import type { AircraftModel, ConstructorEntity } from '@/models'
@@ -96,9 +98,12 @@ import { useRoute } from 'vuetify/lib/composables/router.mjs'
 import { useConstructorStore } from '@/stores/constructorStore'
 import AircraftEntityTable from '@/components/AircraftEntityTable.vue'
 import type { DataTableHeader } from 'vuetify'
+import { useApi } from '@/api'
+import { storeToRefs } from 'pinia'
 
 const modelsStore = useModelsStore()
-const { getAircraftModelByID } = modelsStore
+const { currentModel } = storeToRefs(modelsStore)
+const { getAircraftModelByID } = useApi()
 
 const modalStore = useConstructorStore()
 const { openEntityConstructor } = modalStore
@@ -106,67 +111,74 @@ const { openEntityConstructor } = modalStore
 const tab = ref<ConstructorEntity>('climb')
 
 const currentModelID = useRoute().value?.params.id
-const currentModel = ref<AircraftModel | undefined>(undefined)
+// const currentModel = ref<AircraftModel | undefined>(undefined)
 
 const search = ref('')
 
 const generalInfo = computed(() => {
-  return {
-    aircraft: currentModel.value
-      ? {
-          type: currentModel.value?.info.ModelType,
-          subtype: currentModel.value?.info.AircraftTypeName,
-          engine: currentModel.value?.info.EngineType,
-        }
-      : null,
-    modelData: currentModel.value
-      ? {
-          name: currentModel.value?.info.ModelTitle,
-          format: currentModel.value?.info.FDPAFormatVersion,
-          revision: '???',
-          revisionFDPA: currentModel.value?.info.FDPARevisionDate,
-        }
-      : null,
-    modelDefaultWeights: currentModel.value
-      ? {
-          DOW: currentModel.value?.info.weightDefault.DOW,
-          MZFW: currentModel.value?.info.weightDefault.MZFW,
-          MTW: currentModel.value?.info.weightDefault.MTW,
-          MTOW: currentModel.value?.info.weightDefault.MTOW,
-          MLDW: currentModel.value?.info.weightDefault.MLDW,
-        }
-      : null,
-    units: currentModel.value
-      ? {
-          weight: currentModel.value?.units.weight,
-          altitude: currentModel.value?.units.altitude,
-          temperature: currentModel.value?.units.temperature,
-          distance: currentModel.value?.units.distance,
-          speed: currentModel.value?.units.speed,
-          verticalSpeed: currentModel.value?.units.verticalSpeed,
-          fuelFlowPerEngine: currentModel.value?.units.fuelFlow,
-          fuelFlow: currentModel.value?.units.fuelFlow,
-          volume: currentModel.value?.units.volume,
-        }
-      : null,
-    modelParams: currentModel.value
-      ? {
-          minWeight: currentModel.value?.info.option.MinWeight,
-          maxWeight: currentModel.value?.info.option.MaxWeight,
-          maxAltitude: currentModel.value?.info.option.MaxAltitudeCruise,
-          climbBias: currentModel.value?.info.biases.ClimbWindDistBias,
-          descentBias: currentModel.value?.info.biases.DescentWindDistBias,
-          taxi: currentModel.value?.info.option.TaxiFuelPerMin,
-          APU: currentModel.value?.info.option.APUBurnPerHour,
-        }
-      : null,
-    fuelCapacity: currentModel.value
-      ? {
-          volume: currentModel.value?.info.weightDefault.FuelCapacityVolume,
-          dencity: currentModel.value?.info.weightDefault.FuelDencity,
-          weight: currentModel.value?.info.weightDefault.FuelCapacity,
-        }
-      : null,
+  if (currentModel.value) {
+    return {
+      aircraft: currentModel.value.info
+        ? {
+            type: currentModel.value?.info.ModelType,
+            subtype: currentModel.value?.info.AircraftTypeName,
+            engine: currentModel.value?.info.EngineType,
+          }
+        : null,
+      modelData: currentModel.value.info
+        ? {
+            name: currentModel.value?.info.ModelTitle,
+            format: currentModel.value?.info.FDPAFormatVersion,
+            revision: '???',
+            revisionFDPA: currentModel.value?.info.FDPARevisionDate,
+          }
+        : null,
+      modelDefaultWeights:
+        currentModel.value.info && currentModel.value.info.weightDefault
+          ? {
+              DOW: currentModel.value?.info.weightDefault.DOW,
+              MZFW: currentModel.value?.info.weightDefault.MZFW,
+              MTW: currentModel.value?.info.weightDefault.MTW,
+              MTOW: currentModel.value?.info.weightDefault.MTOW,
+              MLDW: currentModel.value?.info.weightDefault.MLDW,
+            }
+          : null,
+      units: currentModel.value.units
+        ? {
+            weight: currentModel.value?.units.weight,
+            altitude: currentModel.value?.units.altitude,
+            temperature: currentModel.value?.units.temperature,
+            distance: currentModel.value?.units.distance,
+            speed: currentModel.value?.units.speed,
+            verticalSpeed: currentModel.value?.units.verticalSpeed,
+            fuelFlowPerEngine: currentModel.value?.units.fuelFlow,
+            fuelFlow: currentModel.value?.units.fuelFlow,
+            volume: currentModel.value?.units.volume,
+          }
+        : null,
+      modelParams:
+        currentModel.value.info && currentModel.value.info.option && currentModel.value?.info.biases
+          ? {
+              minWeight: currentModel.value?.info.option.MinWeight,
+              maxWeight: currentModel.value?.info.option.MaxWeight,
+              maxAltitude: currentModel.value?.info.option.MaxAltitudeCruise,
+              climbBias: currentModel.value?.info.biases.ClimbWindDistBias,
+              descentBias: currentModel.value?.info.biases.DescentWindDistBias,
+              taxi: currentModel.value?.info.option.TaxiFuelPerMin,
+              APU: currentModel.value?.info.option.APUBurnPerHour,
+            }
+          : null,
+      fuelCapacity:
+        currentModel.value.info && currentModel.value.info.weightDefault
+          ? {
+              volume: currentModel.value?.info.weightDefault.FuelCapacityVolume,
+              dencity: currentModel.value?.info.weightDefault.FuelDencity,
+              weight: currentModel.value?.info.weightDefault.FuelCapacity,
+            }
+          : null,
+    }
+  } else {
+    return null
   }
 })
 
@@ -241,17 +253,16 @@ watch(tab, () => {
   search.value = ''
 })
 
-onMounted(() => {
+onBeforeMount(async () => {
   if (!currentModelID) {
     router.back()
     return
   }
-  setTimeout(() => {
-    currentModel.value = getAircraftModelByID(String(currentModelID))
-    if (!currentModel.value) {
-      router.back()
-    }
-  }, 1000)
+  await getAircraftModelByID(String(currentModelID))
+
+  if (!currentModel.value) {
+    router.back()
+  }
 })
 </script>
 

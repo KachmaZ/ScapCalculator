@@ -22,13 +22,13 @@ export interface AircraftModel {
 export interface AircraftModelType {
   id: string
   name: string
-  ICAO: string
-  IATA: string
+  icao: string
+  iata: string
 }
 
 export interface AircraftModelSubtype {
   id: string
-  typeICAO: string
+  typeIcao: string
   name: string
-  enginesCount: number
+  engines: number
 }

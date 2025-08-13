@@ -77,11 +77,11 @@ export const useConstructorStore = defineStore('modal', () => {
       SpecialOpsMode: 'NO',
       Wind: 'NO',
     },
-    type: { name: '', ICAO: '', IATA: '' },
+    type: { name: '', icao: '', iata: '' },
     subtype: {
-      typeICAO: '',
       name: '',
-      enginesCount: 0,
+      typeIcao: '',
+      engines: 0,
     },
   }
 

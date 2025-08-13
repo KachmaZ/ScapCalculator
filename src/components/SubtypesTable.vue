@@ -11,14 +11,16 @@
 </template>
 
 <script setup lang="ts">
+import { useApi } from '@/api'
 import AircraftEntityTable from '@/components/AircraftEntityTable.vue'
 import { useModelsStore } from '@/stores/modelsStore'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 
+const { getEntities } = useApi()
+
 const modelsStore = useModelsStore()
 const { subtypesList: items } = storeToRefs(modelsStore)
-const { getAircraftSubtypes } = modelsStore
 
 const isLoading = ref(true)
 
@@ -44,10 +46,7 @@ const headers = [
 
 const search = ref('')
 onMounted(() => {
-  setTimeout(() => {
-    getAircraftSubtypes()
-    isLoading.value = false
-  }, 1000)
+  getEntities('subtype').then(() => (isLoading.value = false))
 })
 </script>
 

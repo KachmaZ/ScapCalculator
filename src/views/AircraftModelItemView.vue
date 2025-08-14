@@ -111,7 +111,6 @@ const { openEntityConstructor } = modalStore
 const tab = ref<ConstructorEntity>('climb')
 
 const currentModelID = useRoute().value?.params.id
-// const currentModel = ref<AircraftModel | undefined>(undefined)
 
 const search = ref('')
 

@@ -100,6 +100,7 @@ import AircraftEntityTable from '@/components/AircraftEntityTable.vue'
 import type { DataTableHeader } from 'vuetify'
 import { useApi } from '@/api'
 import { storeToRefs } from 'pinia'
+import { useFormat } from '@/composables/useFormat'
 
 const modelsStore = useModelsStore()
 const { currentModel } = storeToRefs(modelsStore)
@@ -113,66 +114,67 @@ const tab = ref<ConstructorEntity>('climb')
 const currentModelID = useRoute().value?.params.id
 
 const search = ref('')
+const { getProcessedValue } = useFormat()
 
 const generalInfo = computed(() => {
   if (currentModel.value) {
     return {
       aircraft: currentModel.value.info
         ? {
-            type: currentModel.value?.info.ModelType,
-            subtype: currentModel.value?.info.AircraftTypeName,
-            engine: currentModel.value?.info.EngineType,
+            type: getProcessedValue(currentModel.value?.info.ModelType),
+            subtype: getProcessedValue(currentModel.value?.info.AircraftSubTypeName),
+            engine: getProcessedValue(currentModel.value?.info.EngineType),
           }
         : null,
       modelData: currentModel.value.info
         ? {
-            name: currentModel.value?.info.ModelTitle,
-            format: currentModel.value?.info.FDPAFormatVersion,
-            revision: '???',
-            revisionFDPA: currentModel.value?.info.FDPARevisionDate,
+            name: getProcessedValue(currentModel.value?.info.ModelTitle),
+            format: getProcessedValue(currentModel.value?.info.FDPAFormatVersion),
+            revision: getProcessedValue(currentModel.value?.info.FDPARevision),
+            revisionFDPA: getProcessedValue(currentModel.value?.info.FDPARevisionDate),
           }
         : null,
       modelDefaultWeights:
         currentModel.value.info && currentModel.value.info.weightDefault
           ? {
-              DOW: currentModel.value?.info.weightDefault.DOW,
-              MZFW: currentModel.value?.info.weightDefault.MZFW,
-              MTW: currentModel.value?.info.weightDefault.MTW,
-              MTOW: currentModel.value?.info.weightDefault.MTOW,
-              MLDW: currentModel.value?.info.weightDefault.MLDW,
+              DOW: getProcessedValue(currentModel.value?.info.weightDefault.DOW),
+              MZFW: getProcessedValue(currentModel.value?.info.weightDefault.MZFW),
+              MTW: getProcessedValue(currentModel.value?.info.weightDefault.MTW),
+              MTOW: getProcessedValue(currentModel.value?.info.weightDefault.MTOW),
+              MLDW: getProcessedValue(currentModel.value?.info.weightDefault.MLDW),
             }
           : null,
       units: currentModel.value.units
         ? {
-            weight: currentModel.value?.units.weight,
-            altitude: currentModel.value?.units.altitude,
-            temperature: currentModel.value?.units.temperature,
-            distance: currentModel.value?.units.distance,
-            speed: currentModel.value?.units.speed,
-            verticalSpeed: currentModel.value?.units.verticalSpeed,
-            fuelFlowPerEngine: currentModel.value?.units.fuelFlow,
-            fuelFlow: currentModel.value?.units.fuelFlow,
-            volume: currentModel.value?.units.volume,
+            weight: getProcessedValue(currentModel.value?.units.weight),
+            altitude: getProcessedValue(currentModel.value?.units.altitude),
+            temperature: getProcessedValue(currentModel.value?.units.temperature),
+            flightDistance: getProcessedValue(currentModel.value?.units.flightDistance),
+            horisontalSpeed: getProcessedValue(currentModel.value?.units.horizontalSpeed),
+            verticalSpeed: getProcessedValue(currentModel.value?.units.verticalSpeed),
+            fuelFlowPerEngine: getProcessedValue(currentModel.value?.units.fuelFlowPerEngine),
+            fuelFlow: getProcessedValue(currentModel.value?.units.fuelFlow),
+            volume: getProcessedValue(currentModel.value?.units.volume),
           }
         : null,
       modelParams:
         currentModel.value.info && currentModel.value.info.option && currentModel.value?.info.biases
           ? {
-              minWeight: currentModel.value?.info.option.MinWeight,
-              maxWeight: currentModel.value?.info.option.MaxWeight,
-              maxAltitude: currentModel.value?.info.option.MaxAltitudeCruise,
-              climbBias: currentModel.value?.info.biases.ClimbWindDistBias,
-              descentBias: currentModel.value?.info.biases.DescentWindDistBias,
-              taxi: currentModel.value?.info.option.TaxiFuelPerMin,
-              APU: currentModel.value?.info.option.APUBurnPerHour,
+              minWeight: getProcessedValue(currentModel.value?.info.option.MinWeight),
+              maxWeight: getProcessedValue(currentModel.value?.info.option.MaxWeight),
+              maxAltitude: getProcessedValue(currentModel.value?.info.option.MaxAltitudeCruise),
+              climbBias: getProcessedValue(currentModel.value?.info.biases.ClimbWindDistBias),
+              descentBias: getProcessedValue(currentModel.value?.info.biases.DescentWindDistBias),
+              taxi: getProcessedValue(currentModel.value?.info.option.TaxiFuelPerMin),
+              APU: getProcessedValue(currentModel.value?.info.option.APUBurnPerHour),
             }
           : null,
       fuelCapacity:
         currentModel.value.info && currentModel.value.info.weightDefault
           ? {
-              volume: currentModel.value?.info.weightDefault.FuelCapacityVolume,
-              dencity: currentModel.value?.info.weightDefault.FuelDencity,
-              weight: currentModel.value?.info.weightDefault.FuelCapacity,
+              volume: getProcessedValue(currentModel.value?.info.weightDefault.FuelCapacityVolume),
+              dencity: getProcessedValue(currentModel.value?.info.weightDefault.FuelDencity),
+              weight: getProcessedValue(currentModel.value?.info.weightDefault.FuelCapacity),
             }
           : null,
     }

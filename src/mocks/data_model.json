@@ -1164,6 +1164,7 @@
     "NumberOfEngines": 2,
     "PaxCapasity": "",
     "RevisionDate": "2011-02-01",
+    "FDPARevision": "",
     "Winglet": "",
     "biases": {
       "BurnAllowLanding": 0,

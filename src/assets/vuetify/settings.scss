@@ -1,0 +1,7 @@
+// @forward 'vuetify/settings' with (
+//   $button-border-radius: 138px
+// );
+
+@use 'vuetify/settings' with (
+  $button-border-color: 'red'
+);

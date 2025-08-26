@@ -4,6 +4,7 @@ export interface AircraftInfo {
   AircraftTypeName: string
   EngineType: string
   FDPAFormatVersion: string
+  FDPARevision: string // неизвестное
   FDPARevisionDate: string // DATE STRING
   FireCat: string
   Manufacturer: string

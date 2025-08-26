@@ -18,7 +18,7 @@
 <script setup lang="ts">
 defineProps<{
   title: string
-  info: Record<string, string | number> | null | undefined
+  info: Record<string, string | number | boolean> | null | undefined
 }>()
 </script>
 

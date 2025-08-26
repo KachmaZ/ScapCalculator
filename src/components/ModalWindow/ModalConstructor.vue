@@ -16,7 +16,7 @@
       >
         <VTabs v-model="tab" v-if="!editMode" align-tabs="center" class="mb-4">
           <VTab value="add">Add</VTab>
-          <VTab value="import">Import </VTab>
+          <VTab v-if="!['type', 'subtype'].includes(currentEntity)" value="import">Import </VTab>
         </VTabs>
         <VTabsWindow v-model="tab">
           <VTabsWindowItem value="add">
@@ -35,6 +35,7 @@
                   type="text"
                   hide-details
                   v-model="currentDraftObject[key as keyof ConstructorDraft]"
+                  density="compact"
                 />
               </VCol>
             </VRow>

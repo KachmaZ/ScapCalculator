@@ -10,12 +10,14 @@
   >
     <template v-slot:item="{ item }">
       <tr @click="handleRowClick(item.id)">
-        <td>{{ item.info.ModelTitle }}</td>
-        <td>{{ item.info.AircraftSubTypeName }}</td>
-        <td>{{ item.info.EngineType }}</td>
-        <td class="text-center">{{ item.info.ModelType }}</td>
-        <td class="text-center">{{ item.info.FDPAFormatVersion }}</td>
-        <td class="text-center">{{ item.info.FDPARevisionDate }}</td>
+        <td>{{ getProcessedValue(item.info.ModelTitle) }}</td>
+        <td>{{ getProcessedValue(item.info.AircraftSubTypeName) }}</td>
+        <td>{{ getProcessedValue(item.info.EngineType) }}</td>
+        <td class="text-center">{{ getProcessedValue(item.info.ModelType) }}</td>
+        <td class="text-center">{{ getProcessedValue(item.info.FDPAFormatVersion) }}</td>
+        <td class="text-center">
+          {{ getProcessedValue(item.info.FDPARevisionDate) }}
+        </td>
       </tr>
     </template>
   </VDataTableVirtual>
@@ -23,6 +25,7 @@
 
 <script setup lang="ts">
 import { useApi } from '@/api'
+import { useFormat } from '@/composables/useFormat'
 import type { SCDataTableHeadersAlign } from '@/models'
 import router from '@/router'
 import { useModelsStore } from '@/stores/modelsStore'
@@ -30,6 +33,8 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 
 const { getAircraftModels } = useApi()
+
+const { getProcessedValue } = useFormat()
 
 const handleRowClick = (modelID: string) => {
   router.push({ name: 'ModelsItem', params: { id: modelID } })

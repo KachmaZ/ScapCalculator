@@ -11,52 +11,187 @@
           <VBtn icon="mdi-content-save" @click="handleSaveClick"></VBtn> </VToolbar></VCol
     ></VRow>
     <VRow>
+      <VCol cols="4">
+        <VCard min-height="300px" height="100%" variant="outlined" color="primary">
+          <VCardTitle color="primary" class="text-center"> Units </VCardTitle>
+          <VDivider></VDivider>
+          <VRow class="px-4">
+            <VCol cols="6" class="d-flex align-center">
+              <b>Weight:</b>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center">
+              <VTextField
+                name="type"
+                v-model="draftModel.units.weight"
+                single-line
+                hide-details
+                density="compact"
+              ></VTextField>
+            </VCol>
+          </VRow>
+          <VRow class="px-4">
+            <VCol cols="6" class="d-flex align-center">
+              <b>Altitude:</b>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center">
+              <VTextField
+                name="type"
+                v-model="draftModel.units.altitude"
+                single-line
+                hide-details
+                density="compact"
+              ></VTextField>
+            </VCol>
+          </VRow>
+          <VRow class="px-4">
+            <VCol cols="6" class="d-flex align-center">
+              <b>Temperature:</b>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center">
+              <VTextField
+                name="type"
+                v-model="draftModel.units.temperature"
+                single-line
+                hide-details
+                density="compact"
+              ></VTextField>
+            </VCol>
+          </VRow>
+          <VRow class="px-4">
+            <VCol cols="6" class="d-flex align-center">
+              <b>Distance:</b>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center">
+              <VTextField
+                name="type"
+                v-model="draftModel.units.flightDistance"
+                single-line
+                hide-details
+                density="compact"
+              ></VTextField>
+            </VCol>
+          </VRow>
+          <VRow class="px-4">
+            <VCol cols="6" class="d-flex align-center">
+              <b>Speed:</b>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center">
+              <VTextField
+                name="type"
+                v-model="draftModel.units.horizontalSpeed"
+                single-line
+                hide-details
+                density="compact"
+              ></VTextField>
+            </VCol>
+          </VRow>
+          <VRow class="px-4">
+            <VCol cols="6" class="d-flex align-center">
+              <b>Vertical Speed:</b>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center">
+              <VTextField
+                name="type"
+                v-model="draftModel.units.verticalSpeed"
+                single-line
+                hide-details
+                density="compact"
+              ></VTextField>
+            </VCol>
+          </VRow>
+          <VRow class="px-4">
+            <VCol cols="6" class="d-flex align-center">
+              <b>Fuel Flow Per Engine:</b>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center">
+              <VTextField
+                name="type"
+                v-model="draftModel.units.fuelFlowPerEngine"
+                single-line
+                hide-details
+                density="compact"
+              ></VTextField>
+            </VCol>
+          </VRow>
+          <VRow class="px-4">
+            <VCol cols="6" class="d-flex align-center">
+              <b>Fuel Flow:</b>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center">
+              <VTextField
+                name="type"
+                v-model="draftModel.units.fuelFlow"
+                single-line
+                hide-details
+                density="compact"
+              ></VTextField>
+            </VCol>
+          </VRow>
+          <VRow class="px-4">
+            <VCol cols="6" class="d-flex align-center">
+              <b>Volume:</b>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center">
+              <VTextField
+                name="type"
+                v-model="draftModel.units.volume"
+                single-line
+                hide-details
+                density="compact"
+              ></VTextField>
+            </VCol>
+          </VRow>
+        </VCard>
+      </VCol>
+
       <VCol cols="4"
         ><VCard min-height="300px" height="100%" variant="outlined" color="primary">
           <VCardTitle color="primary" class="text-center"> Aircraft </VCardTitle>
           <VDivider></VDivider>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Type:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.ModelType"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>SubType:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.AircraftTypeName"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Engine:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.EngineType"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
+          <div class="mt-2">
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Type:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <VTextField
+                  name="type"
+                  v-model="draftModel.info.ModelType"
+                  single-line
+                  hide-details
+                  density="compact"
+                ></VTextField>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>SubType:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <VTextField
+                  name="type"
+                  v-model="draftModel.info.AircraftSubTypeName"
+                  single-line
+                  hide-details
+                  density="compact"
+                ></VTextField>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Engine:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <VTextField
+                  name="type"
+                  v-model="draftModel.info.EngineType"
+                  single-line
+                  hide-details
+                  density="compact"
+                ></VTextField>
+              </VCol>
+            </VRow>
+          </div>
         </VCard>
       </VCol>
 
@@ -99,7 +234,7 @@
             <VCol cols="6" class="d-flex align-center">
               <VTextField
                 name="type"
-                value="'???'"
+                v-model="draftModel.info.FDPARevision"
                 single-line
                 hide-details
                 density="compact"
@@ -191,139 +326,6 @@
               <VTextField
                 name="type"
                 v-model="draftModel.info.weightDefault.MLDW"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-        </VCard>
-      </VCol>
-
-      <VCol cols="4">
-        <VCard min-height="300px" height="100%" variant="outlined" color="primary">
-          <VCardTitle color="primary" class="text-center"> Units </VCardTitle>
-          <VDivider></VDivider>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Weight:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.weight"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Altitude:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.altitude"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Temperature:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.temperature"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Distance:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.distance"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Speed:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.speed"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Vertical Speed:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.verticalSpeed"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Fuel Flow Per Engine:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.fuelFlow"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Fuel Flow:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.fuelFlow"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Volume:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.volume"
                 single-line
                 hide-details
                 density="compact"
@@ -520,7 +522,7 @@ const draftModel = ref<Omit<AircraftModel, 'id'>>({
     AircraftTypeName: '',
     EngineType: '',
     FDPAFormatVersion: '',
-    // 'FDPARevision Date': '',
+    FDPARevision: '',
     FDPARevisionDate: '',
     FireCat: '',
     Manufacturer: '',
@@ -595,9 +597,10 @@ const draftModel = ref<Omit<AircraftModel, 'id'>>({
   },
   units: {
     altitude: 'FT',
-    distance: 'NM',
-    fuelFlow: 'PerEngine',
-    speed: 'KT',
+    flightDistance: 'NM',
+    fuelFlow: '???',
+    fuelFlowPerEngine: 'PerEngine',
+    horizontalSpeed: 'KT',
     temperature: 'C°',
     time: 'MIN',
     verticalSpeed: 'FT/MIN',

@@ -11,37 +11,49 @@
       hover
       class="elevation-1"
     >
-      <template v-slot:item.actions="{ item }">
-        <div class="d-flex ga-2 justify-center">
-          <VBtn
-            icon="mdi-pencil"
-            size="24"
-            variant="plain"
-            @click="openEntityEditor(entity, item.id)"
-          >
-            <VIcon size="24"></VIcon>
-          </VBtn>
+      <template #item="{ item, columns }">
+        <tr>
+          <template v-for="c in columns" :key="c.key">
+            <td v-if="c.key !== 'actions'">
+              {{ getProcessedValue(item[c.key!]) }}
+            </td>
+            <td v-else>
+              <div class="d-flex ga-2 justify-center">
+                <VBtn
+                  icon="mdi-pencil"
+                  size="24"
+                  variant="plain"
+                  @click="openEntityEditor(entity, item.id)"
+                >
+                  <VIcon size="24"></VIcon>
+                </VBtn>
 
-          <VBtn
-            icon="mdi-delete-outline"
-            size="24"
-            variant="plain"
-            @click="
-              areYouSure({
-                onAgree: () => deleteEntity(entity, item.id, currentModelId),
-                message: `Delete ${entity}. Are you sure?`,
-              })
-            "
-          >
-            <VIcon size="24"></VIcon>
-          </VBtn></div
-      ></template>
+                <VBtn
+                  v-if="!['type', 'subtype'].includes(entity!)"
+                  icon="mdi-delete-outline"
+                  size="24"
+                  variant="plain"
+                  @click="
+                    areYouSure({
+                      onAgree: () => deleteEntity(entity, item.id, currentModelId),
+                      message: `Delete ${entity}. Are you sure?`,
+                    })
+                  "
+                >
+                  <VIcon size="24"></VIcon>
+                </VBtn>
+              </div>
+            </td>
+          </template>
+        </tr>
+      </template>
     </VDataTableVirtual>
   </VCard>
 </template>
 
 <script setup lang="ts">
 import { useApi } from '@/api'
+import { useFormat } from '@/composables/useFormat'
 import type { ConstructorEntity } from '@/models'
 import { useConfirmStore } from '@/stores/confirmStore'
 import { useConstructorStore } from '@/stores/constructorStore'
@@ -57,6 +69,7 @@ defineProps<{
 }>()
 const { deleteEntity } = useApi()
 
+const { getProcessedValue } = useFormat()
 const modalStore = useConstructorStore()
 const { openEntityEditor } = modalStore
 

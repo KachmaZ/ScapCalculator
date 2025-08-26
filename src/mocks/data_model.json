@@ -1230,13 +1230,14 @@
   },
   "units": {
     "altitude": "FT",
-    "distance": "NM",
-    "fuelFlow": "PerEngine",
-    "speed": "KT",
+    "flightDistance": "NM",
+    "horizontalSpeed": "KT",
     "temperature": "C°",
     "time": "MIN",
     "verticalSpeed": "FT/MIN",
     "volume": "L",
-    "weight": "KG"
+    "weight": "KG",
+    "fuelFlow": "PerEngine",
+    "fuelFlowPerEngine": "PerEngine"
   }
 }

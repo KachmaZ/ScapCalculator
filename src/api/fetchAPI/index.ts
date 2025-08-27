@@ -10,8 +10,13 @@ export const useFetchApi: APIComposable = () => {
   const { logIn } = authStore
 
   const modelsStore = useModelsStore()
-  const { setAircraftModels, setAircraftCurrentModel, setAircraftTypes, setAircraftSubtypes } =
-    modelsStore
+  const {
+    setAircraftModels,
+    setAircraftCurrentModel,
+    setAircraftTypes,
+    setAircraftSubtypes,
+    setAircraftEngines,
+  } = modelsStore
 
   const backendPrefix = '/server/aircrafts/api/v2.0'
 
@@ -223,6 +228,20 @@ export const useFetchApi: APIComposable = () => {
             setAircraftSubtypes(subtypes)
           }
           break
+        case 'engine':
+          response = await fetch(`${backendPrefix}/engines`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Basic ${credentials}`,
+            },
+          })
+
+          if (response.ok) {
+            const { engines } = await response.json()
+
+            setAircraftEngines(engines)
+          }
       }
     } catch (error) {
       alert('Error: ' + error)

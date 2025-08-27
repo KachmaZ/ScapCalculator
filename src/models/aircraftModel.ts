@@ -20,15 +20,15 @@ export interface AircraftModel {
 }
 
 export interface AircraftModelType {
-  id: string
+  id: number
   name: string
   icao: string
   iata: string
 }
 
 export interface AircraftModelSubtype {
-  id: string
-  typeIcao: string
+  id: number
   name: string
   engines: number
+  typeIcao: string
 }

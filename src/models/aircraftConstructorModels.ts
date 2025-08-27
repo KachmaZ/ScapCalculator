@@ -19,5 +19,5 @@ export interface DraftObjects {
   subtype: Omit<AircraftModelSubtype, 'id'>
 }
 
-export type ConstructorEntity = null | 'type' | 'subtype' | AircraftEntityName
+export type ConstructorEntity = null | 'type' | 'subtype' | 'engine' | AircraftEntityName
 export type ConstructorDraft = DraftObjects[keyof DraftObjects]

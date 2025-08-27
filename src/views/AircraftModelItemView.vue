@@ -12,16 +12,16 @@
           ></VBtn>
         </VToolbar>
       </VCol>
-      <VCol cols="4"><ModelInfoCard title="Units" :info="generalInfo?.units" /></VCol>
       <VCol cols="4"> <ModelInfoCard title="Aircraft" :info="generalInfo?.aircraft" /></VCol>
       <VCol cols="4"><ModelInfoCard title="Model Data" :info="generalInfo?.modelData" /></VCol>
+      <VCol cols="4"><ModelInfoCard title="Model Params" :info="generalInfo?.modelParams" /></VCol>
       <VCol cols="4"
         ><ModelInfoCard title="Model Default Weights" :info="generalInfo?.modelDefaultWeights"
       /></VCol>
-      <VCol cols="4"><ModelInfoCard title="Model Params" :info="generalInfo?.modelParams" /></VCol>
       <VCol cols="4"
         ><ModelInfoCard title="Fuel Capacity" :info="generalInfo?.fuelCapacity"
       /></VCol>
+      <VCol cols="4"><ModelInfoCard title="Units" :info="generalInfo?.units" /></VCol>
     </VRow>
     <VDivider class="my-4"></VDivider>
     <VRow>
@@ -130,8 +130,8 @@ const generalInfo = computed(() => {
         ? {
             name: getProcessedValue(currentModel.value?.info.ModelTitle),
             format: getProcessedValue(currentModel.value?.info.FDPAFormatVersion),
-            revision: getProcessedValue(currentModel.value?.info.FDPARevision),
-            revisionFDPA: getProcessedValue(currentModel.value?.info.FDPARevisionDate),
+            'FDPA Revision Date': getProcessedValue(currentModel.value?.info.FDPARevisionDate),
+            'Revision Date': getProcessedValue(currentModel.value.info.RevisionDate),
           }
         : null,
       modelDefaultWeights:

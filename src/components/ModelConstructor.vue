@@ -11,156 +11,17 @@
           <VBtn icon="mdi-content-save" @click="handleSaveClick"></VBtn> </VToolbar></VCol
     ></VRow>
     <VRow>
-      <VCol cols="4">
-        <VCard min-height="300px" height="100%" variant="outlined" color="primary">
-          <VCardTitle color="primary" class="text-center"> Units </VCardTitle>
-          <VDivider></VDivider>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Weight:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.weight"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Altitude:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.altitude"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Temperature:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.temperature"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Distance:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.flightDistance"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Speed:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.horizontalSpeed"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Vertical Speed:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.verticalSpeed"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Fuel Flow Per Engine:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.fuelFlowPerEngine"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Fuel Flow:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.fuelFlow"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Volume:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.units.volume"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-        </VCard>
-      </VCol>
-
       <VCol cols="4"
         ><VCard min-height="300px" height="100%" variant="outlined" color="primary">
           <VCardTitle color="primary" class="text-center"> Aircraft </VCardTitle>
           <VDivider></VDivider>
-          <div class="mt-2">
+          <div class="py-2">
             <VRow class="px-4">
               <VCol cols="6" class="d-flex align-center">
                 <b>Type:</b>
               </VCol>
               <VCol cols="6" class="d-flex align-center">
-                <VTextField
-                  name="type"
-                  v-model="draftModel.info.ModelType"
-                  single-line
-                  hide-details
-                  density="compact"
-                ></VTextField>
+                <SelectInput :items="selectItems.modelTypes" v-model="draftModel.info.ModelType" />
               </VCol>
             </VRow>
             <VRow class="px-4">
@@ -168,13 +29,10 @@
                 <b>SubType:</b>
               </VCol>
               <VCol cols="6" class="d-flex align-center">
-                <VTextField
-                  name="type"
+                <SelectInput
+                  :items="selectItems.modelSubtypes"
                   v-model="draftModel.info.AircraftSubTypeName"
-                  single-line
-                  hide-details
-                  density="compact"
-                ></VTextField>
+                ></SelectInput>
               </VCol>
             </VRow>
             <VRow class="px-4">
@@ -182,13 +40,10 @@
                 <b>Engine:</b>
               </VCol>
               <VCol cols="6" class="d-flex align-center">
-                <VTextField
-                  name="type"
+                <SelectInput
+                  :items="selectItems.engines"
                   v-model="draftModel.info.EngineType"
-                  single-line
-                  hide-details
-                  density="compact"
-                ></VTextField>
+                ></SelectInput>
               </VCol>
             </VRow>
           </div>
@@ -199,52 +54,31 @@
         ><VCard min-height="300px" height="100%" variant="outlined" color="primary">
           <VCardTitle color="primary" class="text-center"> Model Data </VCardTitle>
           <VDivider></VDivider>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Name:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.ModelTitle"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Format:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.FDPAFormatVersion"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Revision:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.FDPARevision"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
+          <div class="py-2">
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Name:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <StringInput v-model="draftModel.info.ModelTitle"></StringInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Format:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <SelectInput
+                  :items="selectItems.formats"
+                  v-model="draftModel.info.FDPAFormatVersion"
+                ></SelectInput>
+              </VCol>
+            </VRow>
             <VRow class="px-4">
               <VCol cols="6" class="d-flex align-center">
                 <b>Revision FDPA:</b>
               </VCol>
-              <VCol cols="6" class="d-flex align-center">
+              <VCol cols="12" class="d-flex align-center">
                 <VTextField
                   name="type"
                   v-model="draftModel.info.FDPARevisionDate"
@@ -252,9 +86,10 @@
                   hide-details
                   density="compact"
                 ></VTextField>
+                <DateInput v-model="draftModel.info.FDPARevisionDate" />
               </VCol>
             </VRow>
-          </VRow>
+          </div>
         </VCard>
       </VCol>
 
@@ -339,104 +174,70 @@
         <VCard min-height="300px" height="100%" variant="outlined" color="primary">
           <VCardTitle color="primary" class="text-center"> Model Params </VCardTitle>
           <VDivider></VDivider>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Min weight:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.option.MinWeight"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Max weight:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.option.MaxWeight"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Max Altitude:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.option.MaxAltitudeCruise"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Climb biases:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.biases.ClimbWindDistBias"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Descent biases:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.biases.DescentWindDistBias"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>Taxi:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.option.TaxiFuelPerMin"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
-          <VRow class="px-4">
-            <VCol cols="6" class="d-flex align-center">
-              <b>APU:</b>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center">
-              <VTextField
-                name="type"
-                v-model="draftModel.info.option.APUBurnPerHour"
-                single-line
-                hide-details
-                density="compact"
-              ></VTextField>
-            </VCol>
-          </VRow>
+          <div class="py-2">
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Min weight:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <NumberInput v-model="draftModel.info.option.MinWeight"></NumberInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Max weight:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <NumberInput v-model="draftModel.info.option.MaxWeight"></NumberInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Max Altitude:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <NumberInput v-model="draftModel.info.option.MaxAltitudeCruise"></NumberInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Climb biases:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <NumberInput
+                  v-model="draftModel.info.biases.ClimbWindDistBias"
+                  :precision="4"
+                ></NumberInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Descent biases:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <NumberInput
+                  v-model="draftModel.info.biases.DescentWindDistBias"
+                  :precision="4"
+                ></NumberInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Taxi:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <NumberInput v-model="draftModel.info.option.TaxiFuelPerMin"></NumberInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>APU:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <NumberInput v-model="draftModel.info.option.APUBurnPerHour"></NumberInput>
+              </VCol>
+            </VRow>
+          </div>
         </VCard>
       </VCol>
 
@@ -488,27 +289,111 @@
           </VRow>
         </VCard>
       </VCol>
+      <VCol cols="4">
+        <VCard min-height="300px" height="100%" variant="outlined" color="primary">
+          <VCardTitle color="primary" class="text-center"> Units </VCardTitle>
+          <VDivider></VDivider>
+          <div class="py-2">
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Weight:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <StringInput v-model="draftModel.units.weight" disabled />
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Altitude:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <StringInput v-model="draftModel.units.verticalDistance" disabled></StringInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Temperature:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <StringInput v-model="draftModel.units.temperature" disabled></StringInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Distance:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <StringInput v-model="draftModel.units.flightDistance" disabled></StringInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Speed:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <StringInput v-model="draftModel.units.horizontalSpeed" disabled></StringInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Vertical Speed:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <StringInput v-model="draftModel.units.verticalSpeed" disabled></StringInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Fuel Flow Per Engine:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <CheckboxInput v-model="draftModel.units.fuelFlowPerEngine" disabled />
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Fuel Flow:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <StringInput v-model="draftModel.units.fuelFlow" disabled></StringInput>
+              </VCol>
+            </VRow>
+            <VRow class="px-4">
+              <VCol cols="6" class="d-flex align-center">
+                <b>Volume:</b>
+              </VCol>
+              <VCol cols="6" class="d-flex align-center">
+                <StringInput v-model="draftModel.units.volume" disabled></StringInput>
+              </VCol>
+            </VRow>
+          </div>
+        </VCard>
+      </VCol>
     </VRow>
-    <VRow></VRow>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useApi } from '@/api'
+import CheckboxInput from '@/components/CustomInputs/CheckboxInput.vue'
+import DateInput from '@/components/CustomInputs/DateInput.vue'
+import NumberInput from '@/components/CustomInputs/NumberInput.vue'
+import SelectInput from '@/components/CustomInputs/SelectInput.vue'
+import StringInput from '@/components/CustomInputs/StringInput.vue'
 import type { AircraftModel } from '@/models'
 import router from '@/router'
 import { useModelsStore } from '@/stores/modelsStore'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-const { getAircraftModelByID, createAircraftModel, updateAircraftModelByID } = useApi()
+const { getAircraftModelByID, createAircraftModel, updateAircraftModelByID, getEntities } = useApi()
 
 const editorMode = ref(false)
 const modelID = useRoute().params['id']
 
 const modelStore = useModelsStore()
-const { currentModel } = storeToRefs(modelStore)
+const { currentModel, subtypesList, enginesList } = storeToRefs(modelStore)
 
 const draftModel = ref<Omit<AircraftModel, 'id'>>({
   altitudeCapability: [],
@@ -522,7 +407,6 @@ const draftModel = ref<Omit<AircraftModel, 'id'>>({
     AircraftTypeName: '',
     EngineType: '',
     FDPAFormatVersion: '',
-    FDPARevision: '',
     FDPARevisionDate: '',
     FireCat: '',
     Manufacturer: '',
@@ -598,6 +482,7 @@ const draftModel = ref<Omit<AircraftModel, 'id'>>({
   units: {
     altitude: 'FT',
     flightDistance: 'NM',
+    verticalDistance: '???',
     fuelFlow: '???',
     fuelFlowPerEngine: 'PerEngine',
     horizontalSpeed: 'KT',
@@ -608,6 +493,26 @@ const draftModel = ref<Omit<AircraftModel, 'id'>>({
     weight: 'KG',
   },
 })
+
+const selectItems = computed(() => ({
+  modelTypes: [
+    {
+      title: 'SCAP',
+      value: 1,
+    },
+    {
+      title: 'FPPM',
+      value: 2,
+    },
+    {
+      title: 'AERO',
+      value: 3,
+    },
+  ],
+  modelSubtypes: subtypesList.value.map((subtype) => subtype.name),
+  engines: enginesList.value.map((engine) => engine.name),
+  formats: ['1.0', '1.1', '1.2', '1.3'],
+}))
 
 const handleBackClick = () => {
   if (!editorMode.value) {
@@ -633,6 +538,9 @@ onMounted(async () => {
     await getAircraftModelByID(modelID)
     draftModel.value = currentModel.value
   }
+
+  await getEntities('engine')
+  await getEntities('subtype')
 })
 </script>
 

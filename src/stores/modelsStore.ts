@@ -10,6 +10,7 @@ export const useModelsStore = defineStore('models', () => {
   const currentModel = ref<AircraftModel>(<AircraftModel>{})
   const typesList = ref<AircraftModelType[]>([])
   const subtypesList = ref<AircraftModelSubtype[]>([])
+  const enginesList = ref<{ id: number; name: string }[]>([])
 
   const setAircraftModels = (newModels: AircraftModel[], mockMode?: boolean) => {
     if (mockMode) {
@@ -27,7 +28,7 @@ export const useModelsStore = defineStore('models', () => {
   const setAircraftTypes = (newTypes: AircraftModelType[], mockMode?: boolean) => {
     if (mockMode) {
       typesList.value = [
-        { id: '1', name: 'Boeing 737-800W', icao: 'Boeing 737-800W', iata: 'Boeing 737-800W' },
+        { id: 1, name: 'Boeing 737-800W', icao: 'Boeing 737-800W', iata: 'Boeing 737-800W' },
       ]
       return
     }
@@ -39,9 +40,9 @@ export const useModelsStore = defineStore('models', () => {
   const setAircraftSubtypes = (newSubtypes: AircraftModelSubtype[], mockMode?: boolean) => {
     if (mockMode) {
       subtypesList.value = [
-        { id: '1', typeIcao: 'B73H', name: 'Boeing 737-800W', engines: 2 },
-        { id: '2', typeIcao: 'B738', name: 'Boeing 737-800', engines: 2 },
-        { id: '3', typeIcao: 'B733', name: 'Boeing 737-300', engines: 2 },
+        { id: 1, typeIcao: 'B73H', name: 'Boeing 737-800W', engines: 2 },
+        { id: 2, typeIcao: 'B738', name: 'Boeing 737-800', engines: 2 },
+        { id: 3, typeIcao: 'B733', name: 'Boeing 737-300', engines: 2 },
       ]
       return
     }
@@ -56,15 +57,23 @@ export const useModelsStore = defineStore('models', () => {
     }
   }
 
+  const setAircraftEngines = (newEngines: { id: number; name: string }[]) => {
+    if (newEngines) {
+      enginesList.value = [...newEngines]
+    }
+  }
+
   return {
     modelList,
     currentModel,
     typesList,
     subtypesList,
+    enginesList,
 
     setAircraftModels,
     setAircraftTypes,
     setAircraftSubtypes,
     setAircraftCurrentModel,
+    setAircraftEngines,
   }
 })

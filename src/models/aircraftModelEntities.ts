@@ -89,12 +89,13 @@ export interface AircraftHold {
 export interface AircraftUnits {
   altitude: string
   flightDistance: string
+  verticalDistance: string
   horizontalSpeed: string
-  fuelFlow: string
   temperature: string
   time: string
   verticalSpeed: string
   volume: string
   weight: string
+  fuelFlow: string
   fuelFlowPerEngine: string
 }

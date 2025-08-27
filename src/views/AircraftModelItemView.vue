@@ -62,7 +62,7 @@
               <VTabsWindowItem
                 v-for="tableEntity in Object.keys(tablesHeaders) as Exclude<
                   ConstructorEntity,
-                  'type' | 'subtype'
+                  'type' | 'subtype' | 'engine'
                 >[]"
                 :key="tableEntity!"
                 :value="tableEntity!"
@@ -184,7 +184,7 @@ const generalInfo = computed(() => {
 })
 
 const tablesHeaders: Record<
-  Exclude<ConstructorEntity, null | 'type' | 'subtype'>,
+  Exclude<ConstructorEntity, null | 'type' | 'subtype' | 'engine'>,
   DataTableHeader[]
 > = {
   climb: [

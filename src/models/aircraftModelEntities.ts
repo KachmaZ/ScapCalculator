@@ -97,5 +97,5 @@ export interface AircraftUnits {
   volume: string
   weight: string
   fuelFlow: string
-  fuelFlowPerEngine: string
+  fuelFlowPerEngine: boolean
 }

@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<ICheckboxProps & Props>(), {
   hideDetails: true,
   color: 'primary',
 })
+
 const modelValue = defineModel()
 </script>
 

@@ -41,7 +41,7 @@ export const useMockApi: APIComposable = () => {
   const addEntity = async (
     entity: ConstructorEntity,
     draft: ConstructorDraft,
-    modelID?: string,
+    modelID?: string | number,
   ) => {
     const editingModelIndex = modelList.value.findIndex((model) => String(model.id) === modelID)
 
@@ -104,9 +104,9 @@ export const useMockApi: APIComposable = () => {
 
   const editEntity = async (
     entity: ConstructorEntity,
-    entityId: string,
+    entityId: string | number,
     draft: ConstructorDraft,
-    modelID?: string,
+    modelID?: string | number,
   ) => {
     const editingModelIndex = modelList.value.findIndex((model) => String(model.id) === modelID)
 
@@ -186,7 +186,11 @@ export const useMockApi: APIComposable = () => {
     }
   }
 
-  const deleteEntity = async (entity: ConstructorEntity, entityId: string, modelID?: string) => {
+  const deleteEntity = async (
+    entity: ConstructorEntity,
+    entityId: string | number,
+    modelID?: string | number,
+  ) => {
     const editingModelIndex = modelList.value.findIndex((model) => model.id === modelID)
 
     switch (entity) {
@@ -238,7 +242,7 @@ export const useMockApi: APIComposable = () => {
     setAircraftModels([], true)
   }
 
-  const getAircraftModelByID = async (modelID: string) => {
+  const getAircraftModelByID = async (modelID: string | number) => {
     await getAircraftModels()
 
     setAircraftCurrentModel(
@@ -250,7 +254,10 @@ export const useMockApi: APIComposable = () => {
     modelList.value.push({ id: crypto.randomUUID(), ...modelData })
   }
 
-  const updateAircraftModelByID = async (modelID: string, modelData: Omit<AircraftModel, 'id'>) => {
+  const updateAircraftModelByID = async (
+    modelID: string | number,
+    modelData: Omit<AircraftModel, 'id'>,
+  ) => {
     const editedModelIndex = modelList.value.findIndex((model) => model.id === modelID)
     modelList.value[editedModelIndex] = { id: modelID, ...modelData }
   }

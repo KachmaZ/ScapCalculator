@@ -9,7 +9,7 @@ import type {
 import type { AircraftInfo } from './aircraftModelInfo'
 
 export interface AircraftModel {
-  id: string
+  id: string | number
   info: AircraftInfo
   units: AircraftUnits
   altitudeCapability: AircraftAltCap[]
@@ -20,14 +20,14 @@ export interface AircraftModel {
 }
 
 export interface AircraftModelType {
-  id: number
+  id: string | number
   name: string
   icao: string
   iata: string
 }
 
 export interface AircraftModelSubtype {
-  id: number
+  id: string | number
   name: string
   engines: number
   typeIcao: string

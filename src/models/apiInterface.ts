@@ -15,12 +15,12 @@ interface APIComposableFunctions {
     entity: ConstructorEntity,
     entityId: string | number,
     draft: ConstructorDraft,
-    modelID?: string,
+    modelID?: string | number,
   ) => Promise<void>
   deleteEntity: (
     entity: ConstructorEntity,
     entityId: string | number,
-    modelID?: string,
+    modelID?: string | number,
   ) => Promise<void>
 
   getAircraftModels: () => Promise<void>

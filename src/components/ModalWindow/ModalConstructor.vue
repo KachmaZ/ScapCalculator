@@ -73,7 +73,7 @@ import { storeToRefs } from 'pinia'
 import { useApi } from '@/api'
 import { useRoute } from 'vue-router'
 import { useModelsStore } from '@/stores/modelsStore'
-import type { AircraftEntity, AircraftModel, ConstructorDraft } from '@/models'
+import type { AircraftEntity, AircraftEntityName, ConstructorDraft } from '@/models'
 import { useConfirmStore } from '@/stores/confirmStore'
 import StringInput from '@/components/CustomInputs/StringInput.vue'
 import NumberInput from '@/components/CustomInputs/NumberInput.vue'
@@ -537,7 +537,7 @@ watch([currentEntity, currentEditingID], () => {
       }
       default:
         if (modelID.value && currentEntity.value) {
-          const target = currentModel.value[currentEntity.value as keyof AircraftModel].find(
+          const target = currentModel.value[currentEntity.value as AircraftEntityName].find(
             (entity: AircraftEntity) => entity.id === currentEditingID.value,
           )
 

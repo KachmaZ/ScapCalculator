@@ -279,6 +279,8 @@ export const useFetchApi: APIComposable = () => {
           })
 
           if (response.ok) {
+            const { ok } = await response.json()
+            if (!ok) throw Error('not ok :/')
             alert(`Entity ${entity} successfully edited!`)
             await getEntities('type')
           }
@@ -295,7 +297,7 @@ export const useFetchApi: APIComposable = () => {
           })
 
           if (response.ok) {
-            const { ok } = response.json()
+            const { ok } = await response.json()
             if (!ok) throw Error('not ok :/')
             alert(`Entity ${entity} successfully edited!`)
             await getEntities('subtype')

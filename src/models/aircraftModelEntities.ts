@@ -1,4 +1,4 @@
-import type { SCBoolean } from './general'
+import type { SCBoolean, SCID } from './general'
 
 export type AircraftEntityName = 'climb' | 'cruise' | 'descent' | 'hold' | 'altitudeCapability'
 
@@ -9,12 +9,12 @@ export type AircraftEntity =
   | AircraftDescent
   | AircraftHold
 export interface AircraftAltCap {
-  id: string
+  id: SCID
   CruiseMode: string
   EngineInOperate: number
   ISA: SCBoolean
   ModeEmerg: SCBoolean
-  ModeID: number
+  ModeID: SCID
   ModeInterpolation: SCBoolean
   ModeName: string
   ModeType: 'ALtCap'
@@ -23,13 +23,13 @@ export interface AircraftAltCap {
 }
 
 export interface AircraftClimb {
-  id: string
+  id: SCID
   CostIndex: number
   DegradationFactor: SCBoolean
   EngineInOperate: number
   ISA: SCBoolean
   ModeEmerg: SCBoolean
-  ModeID: number
+  ModeID: SCID
   ModeInterpolation: SCBoolean
   ModeName: string
   ModeType: 'Climb'
@@ -38,7 +38,7 @@ export interface AircraftClimb {
 }
 
 export interface AircraftCruise {
-  id: string
+  id: SCID
   CostIndex: number
   DegradationFactor: SCBoolean
   EngineInOperate: number
@@ -46,7 +46,7 @@ export interface AircraftCruise {
   ISA: SCBoolean
   MachCalculation: SCBoolean
   ModeEmerg: SCBoolean
-  ModeID: number
+  ModeID: SCID
   ModeInterpolation: SCBoolean
   ModeName: string
   ModeType: 'Cruise'
@@ -55,13 +55,13 @@ export interface AircraftCruise {
 }
 
 export interface AircraftDescent {
-  id: string
+  id: SCID
   CostIndex: number
   DegradationFactor: SCBoolean
   EngineInOperate: number
   ISA: SCBoolean
   ModeEmerg: SCBoolean
-  ModeID: number
+  ModeID: SCID
   ModeInterpolation: SCBoolean
   ModeName: string
   ModeType: 'Descent'
@@ -70,7 +70,7 @@ export interface AircraftDescent {
 }
 
 export interface AircraftHold {
-  id: string
+  id: SCID
   CostIndex: number
   DegradationFactor: SCBoolean
   EngineInOperate: number
@@ -78,7 +78,7 @@ export interface AircraftHold {
   ISA: SCBoolean
   MachCalculation: SCBoolean
   ModeEmerg: SCBoolean
-  ModeID: number
+  ModeID: SCID
   ModeInterpolation: SCBoolean
   ModeName: string
   ModeType: 'HOLD'

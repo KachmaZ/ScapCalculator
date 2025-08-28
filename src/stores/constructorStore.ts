@@ -7,6 +7,7 @@ export const useConstructorStore = defineStore('modal', () => {
   const editMode = ref(false)
   const currentEntity = ref<ConstructorEntity>(null)
   const currentEditingID = ref<number | string | null>(null)
+  const importedFiles = ref([])
 
   const draftObjects: DraftObjects = {
     altitudeCapability: {
@@ -95,6 +96,7 @@ export const useConstructorStore = defineStore('modal', () => {
 
     currentEditingID.value = null
     currentEntity.value = null
+    importedFiles.value = []
   }
 
   const openEntityConstructor = (entity: ConstructorEntity) => {
@@ -117,6 +119,7 @@ export const useConstructorStore = defineStore('modal', () => {
     currentEntity,
     draftObjects,
     currentEditingID,
+    importedFiles,
 
     resetConstructor,
     openEntityConstructor,

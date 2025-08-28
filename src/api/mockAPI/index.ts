@@ -4,6 +4,7 @@ import type {
   ConstructorEntity,
   DraftObjects,
   SCCredentials,
+  SCID,
 } from '@/models'
 import type { APIComposable } from '@/models/apiInterface'
 import { useAuthStore } from '@/stores/authStore'
@@ -38,11 +39,7 @@ export const useMockApi: APIComposable = () => {
     }
   }
 
-  const addEntity = async (
-    entity: ConstructorEntity,
-    draft: ConstructorDraft,
-    modelID?: string | number,
-  ) => {
+  const addEntity = async (entity: ConstructorEntity, draft: ConstructorDraft, modelID?: SCID) => {
     const editingModelIndex = modelList.value.findIndex((model) => String(model.id) === modelID)
 
     switch (entity) {
@@ -104,9 +101,9 @@ export const useMockApi: APIComposable = () => {
 
   const editEntity = async (
     entity: ConstructorEntity,
-    entityId: string | number,
+    entityId: SCID,
     draft: ConstructorDraft,
-    modelID?: string | number,
+    modelID?: SCID,
   ) => {
     const editingModelIndex = modelList.value.findIndex((model) => String(model.id) === modelID)
 
@@ -186,11 +183,7 @@ export const useMockApi: APIComposable = () => {
     }
   }
 
-  const deleteEntity = async (
-    entity: ConstructorEntity,
-    entityId: string | number,
-    modelID?: string | number,
-  ) => {
+  const deleteEntity = async (entity: ConstructorEntity, entityId: SCID, modelID?: SCID) => {
     const editingModelIndex = modelList.value.findIndex((model) => model.id === modelID)
 
     switch (entity) {
@@ -242,7 +235,7 @@ export const useMockApi: APIComposable = () => {
     setAircraftModels([], true)
   }
 
-  const getAircraftModelByID = async (modelID: string | number) => {
+  const getAircraftModelByID = async (modelID: SCID) => {
     await getAircraftModels()
 
     setAircraftCurrentModel(
@@ -254,13 +247,12 @@ export const useMockApi: APIComposable = () => {
     modelList.value.push({ id: crypto.randomUUID(), ...modelData })
   }
 
-  const updateAircraftModelByID = async (
-    modelID: string | number,
-    modelData: Omit<AircraftModel, 'id'>,
-  ) => {
+  const updateAircraftModelByID = async (modelID: SCID, modelData: Omit<AircraftModel, 'id'>) => {
     const editedModelIndex = modelList.value.findIndex((model) => model.id === modelID)
     modelList.value[editedModelIndex] = { id: modelID, ...modelData }
   }
+
+  const importFiles = async () => {}
 
   return {
     authenticate,
@@ -274,5 +266,6 @@ export const useMockApi: APIComposable = () => {
     getAircraftModelByID,
     createAircraftModel,
     updateAircraftModelByID,
+    importFiles,
   }
 }

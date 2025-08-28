@@ -52,7 +52,13 @@
           </VTabsWindowItem>
           <VTabsWindowItem value="import">
             <h4 class="text-h4 text-center">Import {{ currentEntity }}</h4>
-            <VFileInput />
+            <VFileUpload
+              multiple
+              density="compact"
+              variant="outlined"
+              accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12"
+              v-model="importedFiles"
+            />
           </VTabsWindowItem>
         </VTabsWindow>
         <div class="d-flex justify-space-between mt-4">
@@ -78,6 +84,7 @@ import { useConfirmStore } from '@/stores/confirmStore'
 import StringInput from '@/components/CustomInputs/StringInput.vue'
 import NumberInput from '@/components/CustomInputs/NumberInput.vue'
 import CheckboxInput from '@/components/CustomInputs/CheckboxInput.vue'
+import { VFileUpload } from 'vuetify/labs/VFileUpload'
 
 interface DraftSchema {
   title: string
@@ -90,7 +97,7 @@ interface DraftSchema {
   }[]
 }
 
-const { addEntity, editEntity } = useApi()
+const { addEntity, editEntity, importFiles } = useApi()
 const { areYouSure } = useConfirmStore()
 // const modelID = useRoute().params.id
 const route = useRoute()
@@ -99,7 +106,8 @@ const route = useRoute()
 const modelID = computed(() => route.params.id as string | undefined)
 
 const constructorStore = useConstructorStore()
-const { isOpened, currentEntity, currentEditingID, editMode } = storeToRefs(constructorStore)
+const { isOpened, currentEntity, currentEditingID, editMode, importedFiles } =
+  storeToRefs(constructorStore)
 const { resetConstructor } = constructorStore
 
 const modelsStore = useModelsStore()
@@ -138,8 +146,13 @@ const handleConfirm = () => {
       })
     }
   } else {
-    alert('Import file!')
-    resetConstructor()
+    areYouSure({
+      onAgree: async () => {
+        await importFiles(importedFiles.value)
+        resetConstructor()
+      },
+      message: 'Do you want to import chosen files?',
+    })
   }
 }
 

@@ -1,4 +1,10 @@
-import type { AircraftModel, ConstructorDraft, ConstructorEntity, SCCredentials } from '@/models'
+import type {
+  AircraftModel,
+  ConstructorDraft,
+  ConstructorEntity,
+  SCCredentials,
+  SCID,
+} from '@/models'
 import type { APIComposable } from '@/models/apiInterface'
 import { useAuthStore } from '@/stores/authStore'
 import { useModelsStore } from '@/stores/modelsStore'
@@ -75,7 +81,7 @@ export const useFetchApi: APIComposable = () => {
     }
   }
 
-  const getAircraftModelByID = async (modelID: string | number) => {
+  const getAircraftModelByID = async (modelID: SCID) => {
     const credentials = btoa(`${savedLogin.value}:${savedPassword.value}`)
 
     try {
@@ -120,11 +126,7 @@ export const useFetchApi: APIComposable = () => {
 
   const updateAircraftModelByID = async () => {}
 
-  const addEntity = async (
-    entity: ConstructorEntity,
-    draft: ConstructorDraft,
-    modelID?: string | number,
-  ) => {
+  const addEntity = async (entity: ConstructorEntity, draft: ConstructorDraft, modelID?: SCID) => {
     const credentials = btoa(`${savedLogin.value}:${savedPassword.value}`)
     try {
       let response
@@ -259,9 +261,9 @@ export const useFetchApi: APIComposable = () => {
 
   const editEntity = async (
     entity: ConstructorEntity,
-    entityId: string | number,
+    entityId: SCID,
     draft: ConstructorDraft,
-    modelID?: string | number,
+    modelID?: SCID,
   ) => {
     const credentials = btoa(`${savedLogin.value}:${savedPassword.value}`)
 
@@ -335,11 +337,7 @@ export const useFetchApi: APIComposable = () => {
     }
   }
 
-  const deleteEntity = async (
-    entity: ConstructorEntity,
-    entityID: string | number,
-    modelID?: string | number,
-  ) => {
+  const deleteEntity = async (entity: ConstructorEntity, entityID: SCID, modelID?: SCID) => {
     const credentials = btoa(`${savedLogin.value}:${savedPassword.value}`)
     try {
       let response
@@ -374,6 +372,34 @@ export const useFetchApi: APIComposable = () => {
     }
   }
 
+  const importFiles = async (files: unknown[]) => {
+    const credentials = btoa(`${savedLogin.value}:${savedPassword.value}`)
+    const formData = new FormData()
+    for (const file of files) {
+      formData.append('files', file as File)
+    }
+
+    try {
+      const response = await fetch(`${backendPrefix}/data/upload`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Basic ${credentials}`,
+        },
+        body: formData,
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        alert('Upload successful:' + result)
+      } else {
+        console.error('Upload failed:', response.statusText)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return {
     authenticate,
     addEntity,
@@ -384,5 +410,6 @@ export const useFetchApi: APIComposable = () => {
     getAircraftModels,
     getAircraftModelByID,
     updateAircraftModelByID,
+    importFiles,
   }
 }

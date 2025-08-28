@@ -7,9 +7,10 @@ import type {
   AircraftUnits,
 } from './aircraftModelEntities'
 import type { AircraftInfo } from './aircraftModelInfo'
+import type { SCID } from './general'
 
 export interface AircraftModel {
-  id: string | number
+  id: SCID
   info: AircraftInfo
   units: AircraftUnits
   altitudeCapability: AircraftAltCap[]
@@ -20,14 +21,14 @@ export interface AircraftModel {
 }
 
 export interface AircraftModelType {
-  id: string | number
+  id: SCID
   name: string
   icao: string
   iata: string
 }
 
 export interface AircraftModelSubtype {
-  id: string | number
+  id: SCID
   name: string
   engines: number
   typeIcao: string

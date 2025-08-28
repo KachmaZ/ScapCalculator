@@ -27,8 +27,6 @@ interface Props {
   color?: string
 }
 const adapter = useDate()
-// const modelValue = defineModel()
-// const model = shallowRef(adapter.parseISO(modelValue.value))
 
 const displayFormatFunc = (date: string) => {
   return `${adapter.getYear(date)}-${adapter.getMonth(date)}-${adapter.getDate(date)}`

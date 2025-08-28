@@ -6,7 +6,7 @@ export const useConstructorStore = defineStore('modal', () => {
   const isOpened = ref(false)
   const editMode = ref(false)
   const currentEntity = ref<ConstructorEntity>(null)
-  const currentEditingID = ref<string | null>(null)
+  const currentEditingID = ref<number | string | null>(null)
 
   const draftObjects: DraftObjects = {
     altitudeCapability: {
@@ -89,7 +89,7 @@ export const useConstructorStore = defineStore('modal', () => {
     isOpened.value = newState
   }
 
-  const resetConstructor = () => {
+  const resetConstructor = async () => {
     isOpened.value = false
     editMode.value = false
 

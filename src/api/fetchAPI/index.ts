@@ -75,7 +75,7 @@ export const useFetchApi: APIComposable = () => {
     }
   }
 
-  const getAircraftModelByID = async (modelID: string) => {
+  const getAircraftModelByID = async (modelID: string | number) => {
     const credentials = btoa(`${savedLogin.value}:${savedPassword.value}`)
 
     try {
@@ -123,7 +123,7 @@ export const useFetchApi: APIComposable = () => {
   const addEntity = async (
     entity: ConstructorEntity,
     draft: ConstructorDraft,
-    modelID?: string,
+    modelID?: string | number,
   ) => {
     const credentials = btoa(`${savedLogin.value}:${savedPassword.value}`)
     try {
@@ -140,6 +140,9 @@ export const useFetchApi: APIComposable = () => {
           })
 
           if (response.ok) {
+            const { ok, error } = await response.json()
+            if (!ok) throw Error('not ok :/ ' + error)
+
             alert(`Type successfully added!`)
             await getEntities('type')
           }
@@ -155,6 +158,9 @@ export const useFetchApi: APIComposable = () => {
           })
 
           if (response.ok) {
+            const { ok, error } = await response.json()
+            if (!ok) throw Error('not ok :/ ' + error)
+
             alert(`Subtype successfully added!`)
             await getEntities('subtype')
           }
@@ -176,6 +182,8 @@ export const useFetchApi: APIComposable = () => {
             })
 
             if (response.ok) {
+              const { ok, error } = await response.json()
+              if (!ok) throw Error('not ok :/ ' + error)
               alert(`Mode successfully added!`)
               await getAircraftModelByID(modelID)
             }
@@ -223,7 +231,8 @@ export const useFetchApi: APIComposable = () => {
           })
 
           if (response.ok) {
-            const { subtypes } = await response.json()
+            const { ok, subtypes } = await response.json()
+            if (!ok) throw Error('not ok :/')
 
             setAircraftSubtypes(subtypes)
           }
@@ -250,9 +259,9 @@ export const useFetchApi: APIComposable = () => {
 
   const editEntity = async (
     entity: ConstructorEntity,
-    entityId: string,
+    entityId: string | number,
     draft: ConstructorDraft,
-    modelID?: string,
+    modelID?: string | number,
   ) => {
     const credentials = btoa(`${savedLogin.value}:${savedPassword.value}`)
 
@@ -286,6 +295,8 @@ export const useFetchApi: APIComposable = () => {
           })
 
           if (response.ok) {
+            const { ok } = response.json()
+            if (!ok) throw Error('not ok :/')
             alert(`Entity ${entity} successfully edited!`)
             await getEntities('subtype')
           }
@@ -322,7 +333,44 @@ export const useFetchApi: APIComposable = () => {
     }
   }
 
-  const deleteEntity = async () => {}
+  const deleteEntity = async (
+    entity: ConstructorEntity,
+    entityID: string | number,
+    modelID?: string | number,
+  ) => {
+    const credentials = btoa(`${savedLogin.value}:${savedPassword.value}`)
+    try {
+      let response
+
+      switch (entity) {
+        case 'climb':
+        case 'cruise':
+        case 'hold':
+        case 'descent':
+        case 'altitudeCapability':
+          if (modelID) {
+            response = await fetch(`${backendPrefix}/modes/${entityID}?modelId=${modelID}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Basic ${credentials}`,
+              },
+            })
+
+            console.log(response)
+
+            if (response.ok) {
+              const { ok, error } = await response.json()
+              if (!ok) throw Error('not ok :/ ' + error)
+              alert(`Mode successfully deleted!`)
+              await getAircraftModelByID(modelID)
+            }
+          }
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
 
   return {
     authenticate,

@@ -26,12 +26,12 @@ const isLoading = ref(true)
 
 const headers = [
   {
-    title: 'Type ICAO',
-    key: 'typeIcao',
-  },
-  {
     title: 'Name',
     key: 'name',
+  },
+  {
+    title: 'Type ICAO',
+    key: 'typeIcao',
   },
   {
     title: 'Engines',

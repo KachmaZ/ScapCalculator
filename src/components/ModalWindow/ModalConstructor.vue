@@ -20,30 +20,41 @@
         </VTabs>
         <VTabsWindow v-model="tab">
           <VTabsWindowItem value="add">
-            <h4 class="text-h4 text-center">{{ editMode ? 'Edit' : 'Add' }} {{ currentEntity }}</h4>
+            <h4 class="text-h4 text-center">
+              {{ editMode ? 'Edit' : 'Add' }} {{ currentEntitySchema.title }}
+            </h4>
             <VRow
-              v-for="key in Object.keys(currentDraftObject)"
-              :key="key"
+              v-for="field in currentEntitySchema.fields"
+              :key="field.draftKey"
               class="d-flex align-center"
             >
               <VCol cols="4">
-                <b>{{ key }}:</b>
+                <b>{{ field.label }}:</b>
               </VCol>
               <VCol cols="8">
-                <VTextField
+                <StringInput
+                  v-if="field.inputType === 'string'"
                   class="constructor__input"
-                  type="text"
-                  hide-details
-                  v-model="currentDraftObject[key as keyof ConstructorDraft]"
-                  density="compact"
+                  v-model="currentDraftObject[field.draftKey as keyof ConstructorDraft]"
+                />
+                <NumberInput
+                  v-if="field.inputType === 'number'"
+                  class="constructor__input"
+                  v-model="currentDraftObject[field.draftKey as keyof ConstructorDraft]"
+                />
+                <CheckboxInput
+                  v-if="field.inputType === 'checkbox'"
+                  class="constructor__input"
+                  v-model="currentDraftObject[field.draftKey as keyof ConstructorDraft]"
                 />
               </VCol>
             </VRow>
           </VTabsWindowItem>
           <VTabsWindowItem value="import">
             <h4 class="text-h4 text-center">Import {{ currentEntity }}</h4>
-            <VFileInput /> </VTabsWindowItem
-        ></VTabsWindow>
+            <VFileInput />
+          </VTabsWindowItem>
+        </VTabsWindow>
         <div class="d-flex justify-space-between mt-4">
           <VBtn color="red" @click="resetConstructor()">Cancel</VBtn>
           <VBtn color="primary" type="submit" @click="handleConfirm">Confirm</VBtn>
@@ -57,34 +68,57 @@
 <script setup lang="ts">
 // eslint-disable @typescript-eslint/no-unused-vars
 import { useConstructorStore } from '@/stores/constructorStore'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useApi } from '@/api'
 import { useRoute } from 'vue-router'
 import { useModelsStore } from '@/stores/modelsStore'
-import type { ConstructorDraft, DraftObjects } from '@/models'
+import type { AircraftEntity, AircraftModel, ConstructorDraft } from '@/models'
 import { useConfirmStore } from '@/stores/confirmStore'
+import StringInput from '@/components/CustomInputs/StringInput.vue'
+import NumberInput from '@/components/CustomInputs/NumberInput.vue'
+import CheckboxInput from '@/components/CustomInputs/CheckboxInput.vue'
+
+interface DraftSchema {
+  title: string
+  fields: {
+    label: string
+    inputType: 'string' | 'number' | 'checkbox' | 'select' | 'date' | 'none'
+    draftKey: string
+    defaultValue: string | number | boolean
+    options?: unknown[]
+  }[]
+}
 
 const { addEntity, editEntity } = useApi()
 const { areYouSure } = useConfirmStore()
-const modelID = useRoute().params.id
+// const modelID = useRoute().params.id
+const route = useRoute()
+
+// реактивное значение, всегда соответствует текущему маршруту
+const modelID = computed(() => route.params.id as string | undefined)
 
 const constructorStore = useConstructorStore()
 const { isOpened, currentEntity, currentEditingID, editMode } = storeToRefs(constructorStore)
-const { draftObjects, resetConstructor } = constructorStore
+const { resetConstructor } = constructorStore
 
 const modelsStore = useModelsStore()
-const { modelList, typesList, subtypesList } = storeToRefs(modelsStore)
+const { currentModel, typesList, subtypesList } = storeToRefs(modelsStore)
 
 const tab = ref('add')
-const currentDraftObject = ref<ConstructorDraft>(<ConstructorDraft>{})
+// const currentDraftObject = ref<ConstructorDraft>(<ConstructorDraft>{})
+const currentDraftObject = ref<Record<string, unknown>>({})
 
 const handleConfirm = () => {
   if (tab.value === 'add') {
     if (!editMode.value) {
       areYouSure({
         onAgree: () => {
-          addEntity(currentEntity.value, currentDraftObject.value, String(modelID))
+          addEntity(
+            currentEntity.value,
+            currentDraftObject.value as ConstructorDraft,
+            String(modelID.value),
+          )
           resetConstructor()
         },
         message: `Do you want to create new ${currentEntity.value}?`,
@@ -95,8 +129,8 @@ const handleConfirm = () => {
           editEntity(
             currentEntity.value,
             currentEditingID.value!,
-            currentDraftObject.value,
-            String(modelID),
+            currentDraftObject.value as ConstructorDraft,
+            String(modelID.value),
           )
           resetConstructor()
         },
@@ -109,9 +143,377 @@ const handleConfirm = () => {
   }
 }
 
+const entityDraftSchema: Record<string, DraftSchema> = {
+  type: {
+    title: 'Type',
+    fields: [
+      {
+        label: 'Name',
+        inputType: 'string',
+        draftKey: 'name',
+        defaultValue: '',
+      },
+      {
+        label: 'ICAO',
+        inputType: 'string',
+        draftKey: 'icao',
+        defaultValue: '',
+      },
+      {
+        label: 'IATA',
+        inputType: 'string',
+        draftKey: 'iata',
+        defaultValue: '',
+      },
+    ],
+  },
+
+  subtype: {
+    title: 'Subtype',
+    fields: [
+      {
+        label: 'Name',
+        inputType: 'string',
+        draftKey: 'name',
+        defaultValue: '',
+      },
+      {
+        label: 'Type ICAO',
+        inputType: 'string',
+        draftKey: 'typeIcao',
+        defaultValue: '',
+      },
+      {
+        label: 'Engines',
+        inputType: 'number',
+        draftKey: 'engines',
+        defaultValue: 0,
+      },
+    ],
+  },
+
+  climb: {
+    title: 'Climb',
+    fields: [
+      {
+        label: 'Name',
+        inputType: 'string',
+        draftKey: 'ModeName',
+        defaultValue: '',
+      },
+      {
+        label: 'Cost Index',
+        inputType: 'number',
+        draftKey: 'CostIndex',
+        defaultValue: 0,
+      },
+      {
+        label: 'Engine in operate',
+        inputType: 'number',
+        draftKey: 'EngineInOperate',
+        defaultValue: 0,
+      },
+      {
+        label: 'Emergency',
+        inputType: 'checkbox',
+        draftKey: 'ModeEmerg',
+        defaultValue: false,
+      },
+      {
+        label: 'SpecOps',
+        inputType: 'checkbox',
+        draftKey: 'SpecialOpsMode',
+        defaultValue: false,
+      },
+      {
+        label: 'ISA',
+        inputType: 'checkbox',
+        draftKey: 'ISA',
+        defaultValue: false,
+      },
+      {
+        label: 'Wind',
+        inputType: 'checkbox',
+        draftKey: 'Wind',
+        defaultValue: false,
+      },
+      {
+        label: 'Degradation factor',
+        inputType: 'checkbox',
+        draftKey: 'DegradationFactor',
+        defaultValue: false,
+      },
+      {
+        label: 'Mode Type',
+        inputType: 'none',
+        draftKey: 'ModeType',
+        defaultValue: 'climb',
+      },
+    ],
+  },
+  cruise: {
+    title: 'Cruise',
+    fields: [
+      {
+        label: 'Name',
+        inputType: 'string',
+        draftKey: 'ModeName',
+        defaultValue: '',
+      },
+      {
+        label: 'Cost Index',
+        inputType: 'number',
+        draftKey: 'CostIndex',
+        defaultValue: 0,
+      },
+      {
+        label: 'Engine in operate',
+        inputType: 'number',
+        draftKey: 'EngineInOperate',
+        defaultValue: 0,
+      },
+      {
+        label: 'Emergency',
+        inputType: 'checkbox',
+        draftKey: 'ModeEmerg',
+        defaultValue: false,
+      },
+      {
+        label: 'SpecOps',
+        inputType: 'checkbox',
+        draftKey: 'SpecialOpsMode',
+        defaultValue: false,
+      },
+      {
+        label: 'Mach Calculation',
+        inputType: 'checkbox',
+        draftKey: 'MachCalculation',
+        defaultValue: false,
+      },
+      {
+        label: 'ISA',
+        inputType: 'checkbox',
+        draftKey: 'ISA',
+        defaultValue: false,
+      },
+      {
+        label: 'Wind',
+        inputType: 'checkbox',
+        draftKey: 'Wind',
+        defaultValue: false,
+      },
+      {
+        label: 'IAS',
+        inputType: 'checkbox',
+        draftKey: 'IAS',
+        defaultValue: false,
+      },
+      {
+        label: 'Degradation factor',
+        inputType: 'checkbox',
+        draftKey: 'DegradationFactor',
+        defaultValue: false,
+      },
+      {
+        label: 'Mode Type',
+        inputType: 'none',
+        draftKey: 'ModeType',
+        defaultValue: 'cruise',
+      },
+    ],
+  },
+  descent: {
+    title: 'Descent',
+    fields: [
+      {
+        label: 'Name',
+        inputType: 'string',
+        draftKey: 'ModeName',
+        defaultValue: '',
+      },
+      {
+        label: 'Cost Index',
+        inputType: 'number',
+        draftKey: 'CostIndex',
+        defaultValue: 0,
+      },
+      {
+        label: 'Engine in operate',
+        inputType: 'number',
+        draftKey: 'EngineInOperate',
+        defaultValue: 0,
+      },
+      {
+        label: 'Emergency',
+        inputType: 'checkbox',
+        draftKey: 'ModeEmerg',
+        defaultValue: false,
+      },
+      {
+        label: 'SpecOps',
+        inputType: 'checkbox',
+        draftKey: 'SpecialOpsMode',
+        defaultValue: false,
+      },
+      {
+        label: 'ISA',
+        inputType: 'checkbox',
+        draftKey: 'ISA',
+        defaultValue: false,
+      },
+      {
+        label: 'Wind',
+        inputType: 'checkbox',
+        draftKey: 'Wind',
+        defaultValue: false,
+      },
+      {
+        label: 'Degradation factor',
+        inputType: 'checkbox',
+        draftKey: 'DegradationFactor',
+        defaultValue: false,
+      },
+      {
+        label: 'Mode Type',
+        inputType: 'none',
+        draftKey: 'ModeType',
+        defaultValue: 'descent',
+      },
+    ],
+  },
+  hold: {
+    title: 'Hold',
+    fields: [
+      {
+        label: 'Name',
+        inputType: 'string',
+        draftKey: 'ModeName',
+        defaultValue: '',
+      },
+      {
+        label: 'Cost Index',
+        inputType: 'number',
+        draftKey: 'CostIndex',
+        defaultValue: 0,
+      },
+      {
+        label: 'Engine in operate',
+        inputType: 'number',
+        draftKey: 'EngineInOperate',
+        defaultValue: 0,
+      },
+      {
+        label: 'Emergency',
+        inputType: 'checkbox',
+        draftKey: 'ModeEmerg',
+        defaultValue: false,
+      },
+      {
+        label: 'SpecOps',
+        inputType: 'checkbox',
+        draftKey: 'SpecialOpsMode',
+        defaultValue: false,
+      },
+      {
+        label: 'Mach Calculation',
+        inputType: 'checkbox',
+        draftKey: 'MachCalculation',
+        defaultValue: false,
+      },
+      {
+        label: 'ISA',
+        inputType: 'checkbox',
+        draftKey: 'ISA',
+        defaultValue: false,
+      },
+      {
+        label: 'Wind',
+        inputType: 'checkbox',
+        draftKey: 'Wind',
+        defaultValue: false,
+      },
+      {
+        label: 'IAS',
+        inputType: 'checkbox',
+        draftKey: 'IAS',
+        defaultValue: false,
+      },
+      {
+        label: 'Degradation factor',
+        inputType: 'checkbox',
+        draftKey: 'DegradationFactor',
+        defaultValue: false,
+      },
+      {
+        label: 'Mode Type',
+        inputType: 'none',
+        draftKey: 'ModeType',
+        defaultValue: 'hold',
+      },
+    ],
+  },
+  altitudeCapability: {
+    title: 'Altitude Capability',
+    fields: [
+      {
+        label: 'Name',
+        inputType: 'string',
+        draftKey: 'ModeName',
+        defaultValue: '',
+      },
+      {
+        label: 'Cruise Mode',
+        inputType: 'string',
+        draftKey: 'CruiseMode',
+        defaultValue: 0,
+      },
+      {
+        label: 'Engine in operate',
+        inputType: 'number',
+        draftKey: 'EngineInOperate',
+        defaultValue: 0,
+      },
+      {
+        label: 'Emergency',
+        inputType: 'checkbox',
+        draftKey: 'ModeEmerg',
+        defaultValue: false,
+      },
+      {
+        label: 'SpecOps',
+        inputType: 'checkbox',
+        draftKey: 'SpecialOpsMode',
+        defaultValue: false,
+      },
+      {
+        label: 'ISA',
+        inputType: 'checkbox',
+        draftKey: 'ISA',
+        defaultValue: false,
+      },
+      {
+        label: 'Mode Type',
+        inputType: 'none',
+        draftKey: 'ModeType',
+        defaultValue: 'altitudeCapability',
+      },
+    ],
+  },
+}
+
+const currentEntitySchema = computed(() => {
+  return entityDraftSchema[currentEntity.value!]
+})
+
+const getDraftObjectFromSchema = () => {
+  currentEntitySchema.value.fields.map((field) => {
+    currentDraftObject.value[field.draftKey] = field.defaultValue
+  })
+}
+
 watch([currentEntity, currentEditingID], () => {
   if (currentEntity.value) {
-    currentDraftObject.value = { ...draftObjects[currentEntity.value as keyof DraftObjects] }
+    getDraftObjectFromSchema()
   }
 
   if (editMode.value) {
@@ -133,33 +535,14 @@ watch([currentEntity, currentEditingID], () => {
         }
         break
       }
-      case 'altitudeCapability': {
-        if (modelID && currentEntity.value) {
-          const modelIndex = modelList.value.findIndex((model) => model.id === modelID)
-
-          const target = modelList.value[modelIndex].altitudeCapability.find(
-            (entity) => entity.id === currentEditingID.value,
-          )
-          if (target) {
-            const { id: _, ...editObject } = target
-
-            currentDraftObject.value = {
-              ...currentDraftObject.value,
-              ...editObject,
-            }
-          }
-        }
-        break
-      }
       default:
-        if (modelID && currentEntity.value) {
-          const modelIndex = modelList.value.findIndex((model) => model.id === modelID)
-          const target = modelList.value[modelIndex][currentEntity.value].find(
-            (entity) => entity.id === currentEditingID.value,
+        if (modelID.value && currentEntity.value) {
+          const target = currentModel.value[currentEntity.value as keyof AircraftModel].find(
+            (entity: AircraftEntity) => entity.id === currentEditingID.value,
           )
+
           if (target) {
             const { id: _, ...editObject } = target
-
             currentDraftObject.value = {
               ...currentDraftObject.value,
               ...editObject,

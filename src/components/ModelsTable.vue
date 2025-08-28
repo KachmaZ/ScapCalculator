@@ -36,7 +36,7 @@ const { getAircraftModels } = useApi()
 
 const { getProcessedValue } = useFormat()
 
-const handleRowClick = (modelID: string) => {
+const handleRowClick = (modelID: string | number) => {
   router.push({ name: 'ModelsItem', params: { id: modelID } })
 }
 const headers = [
